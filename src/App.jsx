@@ -1,3 +1,11 @@
+import Navbar from "@/components/Navbar";
+import { Outlet } from "react-router-dom";
+
 export default function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <div className="h-[3000px] w-full font-normal font-Inter bg-white">
+      <Navbar />
+      <Outlet />
+    </div>
+  );
 }
