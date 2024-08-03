@@ -8,12 +8,18 @@ const Navbar = () => {
       </Link>
 
       <div className="flex gap-14">
+      <Link to="/register">
         <button className="rounded-full bg-white px-6 text-tertiary">
           Crear cuenta
         </button>
+        </Link>
+        
+        <Link to="/login">
         <button className="rounded-full bg-white px-6 text-tertiary">
           Iniciar sesión
         </button>
+        </Link>
+        
       </div>
     </nav>
   );
