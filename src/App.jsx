@@ -1,17 +1,14 @@
-import { Route, Routes } from "react-router-dom";
-import Layout from "./Layout/Layout";
-import Login from "./Routes/Login";
-import Register from "./Routes/Register.jsx";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Layout from "@/layout/Layout";
 
 export default function App() {
   return (
-    <div className="h-[3000px] w-full font-normal font-Inter bg-white">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-        </Route>
-      </Routes>
+    <div className="font-normal font-Inter bg-white">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}></Route>
+        </Routes>
+      </Router>
     </div>
   );
 }
