@@ -6,20 +6,17 @@ import {
   faYoutube,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
+import { Logo } from "@/components/Logo";
 
 const Footer = () => {
   return (
     <footer className="bg-secondary  w-full  ">
-      <div className="h-48 flex items-center justify-between pl-12 pr-48 py-7 text-white">
-        <div className="flex flex-col items-center px-0.5">
-          <Link to="/">
-            <img src="./images/logo.svg" alt="logo app" className=" " />
-          </Link>
-        </div>
+      <div className=" flex flex-col gap-2   lg:flex-row items-center justify-between px-12 py-7 text-white">
+        <Logo />
 
-        <div className="w-0.5 bg-white h-full"></div>
+        <span className="hidden lg:block  w-0.5 bg-white h-48"></span>
 
-        <div className="flex flex-col items-center space-y-8">
+        <div className="flex flex-col my-8 items-center gap-4 lg:gap-8">
           <Link to="/">
             <p>Términos y condiciones</p>
           </Link>
@@ -31,11 +28,11 @@ const Footer = () => {
           </Link>
         </div>
 
-        <div className="w-0.5 bg-white h-full"></div>
+        <span className="hidden lg:block w-0.5 h-48 bg-white "></span>
 
-        <div className="flex flex-col items-center space-y-5 px-10">
+        <div className="flex flex-col items-center gap-5 px-10">
           <p>Seguinos</p>
-          <div className="flex space-x-4">
+          <div className=" space-x-4">
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon
                 size="2x"
