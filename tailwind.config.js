@@ -5,11 +5,12 @@ export default {
     extend: {
       colors: {
         primary: "#33B8AD",
+        primaryLight: "#00A699",
         secondary: "#99DBD6",
-        tertiary: "#00A699",
+        secondaryLight: "#CCEDEB",
       },
       fontFamily: { Inter: ["Inter", "serif"] },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
