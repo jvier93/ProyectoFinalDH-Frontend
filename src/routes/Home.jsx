@@ -4,7 +4,7 @@ import Search from "../components/Search";
 
 const Home = () => {
   return (
-    <main className="pt-28  flex-grow ">
+    <main className="mt-14 md:mt-20  flex-grow ">
       <Search />
       <Categories />
       <FeaturedServices />
