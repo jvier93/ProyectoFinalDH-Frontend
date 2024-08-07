@@ -11,4 +11,8 @@ export const categories = [
     title: "Sanitaria",
     image: "/images/categories/categoriaSanitaria.png",
   },
+  {
+    title: "Sanitaria",
+    image: "/images/categories/categoriaSanitaria.png",
+  },
 ];
