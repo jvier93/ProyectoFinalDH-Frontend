@@ -1,7 +1,7 @@
 const Search = () => {
   return (
     <section className="h-[235px] space-y-10 py-10 bg-primary">
-      <h1 className="text-center text-xl  text-white lg:text-4xl">
+      <h1 className="text-center text-xl  text-white ap">
         Busca los servicios que necesites
       </h1>
 

@@ -14,9 +14,10 @@ const Footer = () => {
       <div className=" flex flex-col gap-2 lg:flex-row items-center justify-between px-12 py-7 text-white">
         <div className="flex flex-col items-center">
           <Logo />
-          <p className="flex">© 2024 Homehelper. Todos los derechos reservados </p>
+          <p className="flex">
+            {`© ${new Date().getFullYear()} Homehelper. Todos los derechos reservados`}{" "}
+          </p>
         </div>
-        
 
         <span className="hidden lg:block  w-0.5 bg-white h-48"></span>
 

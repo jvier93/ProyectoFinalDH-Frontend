@@ -6,20 +6,20 @@ import { useLoaderData } from "react-router-dom";
 import { services } from "@/data/services";
 
 async function loader() {
-  return { 
+  return {
     categoriesFromLoader: categories,
-    servicesFromLoader: services
-   };
+    servicesFromLoader: services,
+  };
 }
 
 export default function Home() {
   const { categoriesFromLoader, servicesFromLoader } = useLoaderData();
 
   return (
-    <main className="flex-grow ">
-      <Search/>
+    <main className=" mt-14 md:mt-20 ">
+      <Search />
       <Categories categories={categoriesFromLoader} />
-      <FeaturedServices services={servicesFromLoader}/>
+      <FeaturedServices services={servicesFromLoader} />
     </main>
   );
 }
