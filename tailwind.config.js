@@ -9,6 +9,9 @@ export default {
         secondary: "#99DBD6",
         secondaryLight: "#CCEDEB",
       },
+      borderRadius: {
+        'full':'43px'
+      },
       fontFamily: { Inter: ["Inter", "serif"] },
     },
   },

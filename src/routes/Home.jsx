@@ -3,19 +3,23 @@ import { FeaturedServices } from "../components/FeaturedServices";
 import Search from "../components/Search";
 import { categories } from "@/data/categories";
 import { useLoaderData } from "react-router-dom";
+import { services } from "@/data/services";
 
 async function loader() {
-  return { categoriesFromLoader: categories };
+  return { 
+    categoriesFromLoader: categories,
+    servicesFromLoader: services
+   };
 }
 
 export default function Home() {
-  const { categoriesFromLoader } = useLoaderData();
+  const { categoriesFromLoader, servicesFromLoader } = useLoaderData();
 
   return (
-    <main className="mt-14 md:mt-20  flex-grow ">
-      <Search />
+    <main className="flex-grow ">
+      <Search/>
       <Categories categories={categoriesFromLoader} />
-      <FeaturedServices />
+      <FeaturedServices services={servicesFromLoader}/>
     </main>
   );
 }

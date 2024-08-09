@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header className="bg-secondary fixed top-0 w-full  h-[120px] flex items-center justify-between px-12 py-2">
+    <header className="bg-secondary fixed top-0 w-full flex items-center justify-between px-12 py-2">
       <Link to="/">
         <img src="./images/logo.svg" alt="logo app" className=" " />
       </Link>
