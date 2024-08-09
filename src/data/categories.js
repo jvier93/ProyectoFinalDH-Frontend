@@ -1,18 +1,18 @@
 export const categories = [
   {
-    title: "Electricidad",
+    name: "Electricidad",
     image: "/images/categories/categoriaElectricidad.png",
   },
   {
-    title: "Gasista",
+    name: "Gasista",
     image: "/images/categories/categoriaGasista.png",
   },
   {
-    title: "Sanitaria",
+    name: "Sanitaria",
     image: "/images/categories/categoriaSanitaria.png",
   },
   {
-    title: "Sanitaria",
+    name: "Sanitaria",
     image: "/images/categories/categoriaSanitaria.png",
   },
 ];
