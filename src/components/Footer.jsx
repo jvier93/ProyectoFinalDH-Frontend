@@ -12,9 +12,9 @@ const Footer = () => {
   return (
     <footer className="bg-secondary  w-full  ">
       <div className=" flex flex-col gap-2 lg:flex-row items-center justify-between px-12 py-7 text-white">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2">
           <Logo />
-          <p className="flex">
+          <p className="text-center">
             {`© ${new Date().getFullYear()} Homehelper. Todos los derechos reservados`}{" "}
           </p>
         </div>

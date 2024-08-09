@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         loader: Home.loader,
         },
         
-      {path: "/service/:serviceId", element: <Detail />, loader: Detail.loader},
+      {path: "/service/:id", element: <Detail />, loader: Detail.loader},
     ],
   },
 ]);
