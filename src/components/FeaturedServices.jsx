@@ -16,7 +16,7 @@ export const FeaturedServices = ( {services} ) => {
             Servicios recomendados
           </h1>
          <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-8 max-w-screen-2xl mx-auto">{shuffledServices?.map((item, index) => {
-            return <Service key={index} name={item.name} image={item.image} id={item.id}/>
+            return <Service key={index} name={item.name} image={item.urlImage} id={item.id}/>
          })}</div>
       </div>
       

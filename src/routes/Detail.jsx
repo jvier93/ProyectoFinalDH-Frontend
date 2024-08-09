@@ -4,17 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Search from "../components/Search";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 async function loader({ params }) {
-  const detail =
-    services.find((service) => service.id == params.serviceId) || null;
+  const detailsResponse = await fetch(`${API_URL}/products/details/${params.id}`);
+
+  const details = await detailsResponse.json();
 
   return {
-    detailFromLoader: detail,
+    details,
   };
 }
 
 const Detail = () => {
-  const { detailFromLoader } = useLoaderData();
+  const { details } = useLoaderData();
 
   const navigate = useNavigate();
   const handleGoBack = () => {
@@ -31,9 +34,9 @@ const Detail = () => {
       </div>
 
       <div className="flex h-16 bg-primary"></div>
-      {detailFromLoader ? (
+      {details ? (
         <h3 className="text-xl text-center p-8 text-primaryLight lg:text-4xl">
-          {detailFromLoader.categoryName}
+          {details.categoryName}
         </h3>
       ) : (
         <p className="text-xl text-primaryLight lg:text-4xl">
@@ -43,21 +46,21 @@ const Detail = () => {
 
       <div className="mx-auto max-w-[1227px] px-4 py-8 lg:px-10 relative flex flex-col bg-primary justify-center rounded-full ">
         <h3 className="text-xl   text-white lg:text-4xl">
-          {detailFromLoader.name}
+          {details.name}
         </h3>
         <div className="flex pt-2 gap-4 lg:gap-8   ">
           <img
             className="rounded-3xl w-32 lg:w-96"
-            src={detailFromLoader.image}
+            src={details.urlImage}
             alt=""
           />
 
           <div className="flex items-end  gap-2 flex-col">
             <article className="flex-grow text-white text-xs lg:text-2xl">
-              {detailFromLoader.description}
+              {details.description}
             </article>
             <span className="flex  items-end  text-white text-base pr-2 lg:pr-28 lg:text-3xl">
-              {detailFromLoader.price}
+              {details.price}
             </span>
           </div>
         </div>
