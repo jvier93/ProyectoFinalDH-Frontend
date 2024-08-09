@@ -5,7 +5,7 @@ export const Logo = () => {
     <div>
       <Link to="/">
         <img
-          src="/public/images/logo.svg"
+          src="/images/logo.svg"
           alt="logo app"
           className="w-40 md:w-full"
         />
