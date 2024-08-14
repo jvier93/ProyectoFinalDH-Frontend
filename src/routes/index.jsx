@@ -11,6 +11,7 @@ async function loader() {
   const servicesResponse = await fetch(`${API_URL}/products/random`);
 
   const categories = await categoriesResponse.json();
+  console.log(categories);
 
   const services = await servicesResponse.json();
 
@@ -21,10 +22,10 @@ async function loader() {
 }
 
 export default function Home() {
-  const { categories, services} = useLoaderData();
+  const { categories, services } = useLoaderData();
 
   return (
-    <main className=" mt-14 md:mt-20 ">
+    <main className=" mt-14  md:mt-20 ">
       <Search />
       <Categories categories={categories} />
       <FeaturedServices services={services} />

@@ -27,7 +27,9 @@ const Slider = ({ data }) => {
         className=" h-full w-full xl:px-20 xl:space-x-20 space-x-10 md:px-10  overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
       >
         {data?.map((item, index) => {
-          return <Category key={index} title={item.name} image={item.urlImage} />;
+          return (
+            <Category key={index} title={item.name} image={item.urlImage} />
+          );
         })}
       </div>
       <FontAwesomeIcon

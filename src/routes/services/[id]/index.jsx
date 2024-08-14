@@ -1,13 +1,14 @@
-import { services } from "@/data/services";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import Search from "../components/Search";
+import Search from "@/components/Search";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function loader({ params }) {
-  const detailsResponse = await fetch(`${API_URL}/products/details/${params.id}`);
+  const detailsResponse = await fetch(
+    `${API_URL}/products/details/${params.id}`
+  );
 
   const details = await detailsResponse.json();
 
@@ -45,9 +46,7 @@ const Detail = () => {
       )}
 
       <div className="mx-auto max-w-[1227px] px-4 py-8 lg:px-10 relative flex flex-col bg-primary justify-center rounded-full ">
-        <h3 className="text-xl   text-white lg:text-4xl">
-          {details.name}
-        </h3>
+        <h3 className="text-xl   text-white lg:text-4xl">{details.name}</h3>
         <div className="flex pt-2 gap-4 lg:gap-8   ">
           <img
             className="rounded-3xl w-32 lg:w-96"

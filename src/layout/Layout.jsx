@@ -4,9 +4,10 @@ import Footer from "@/components/Footer";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col font-Inter ">
+    <div className=" font-Inter flex flex-col min-h-screen">
       <Header />
-      <div className="flex-grow ">
+
+      <div className="flex-grow">
         <Outlet />
       </div>
 
