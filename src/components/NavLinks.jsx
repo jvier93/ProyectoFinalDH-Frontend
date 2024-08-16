@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const NavLinks = () => {
   const links = [
-    { id: 1, name: "Crear cuenta", path: "#" },
+    { id: 1, name: "Crear cuenta", path: "/signup" },
     { id: 2, name: "Iniciar sesion", path: "#" },
   ];
 

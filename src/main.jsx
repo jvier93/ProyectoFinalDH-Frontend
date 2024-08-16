@@ -24,7 +24,12 @@ const router = createBrowserRouter([
       { index: true, element: <Home />, loader: Home.loader },
       { path: "/profile", element: <Profile /> },
       { path: "/signin", element: <Signin /> },
-      { path: "/signup", element: <Signup /> },
+      {
+        path: "/signup",
+        element: <Signup />,
+        action: Signup.action,
+        errorElement: <div>Hubo un error </div>,
+      },
       { path: "/services/:id", element: <Detail />, loader: Detail.loader },
       {
         path: "/dashboard",
