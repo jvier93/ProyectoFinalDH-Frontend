@@ -1,30 +1,19 @@
-import { useSubmit, redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import FormInput from "@/components/FormInput";
-
-async function action({ request }) {
-  const formData = await request.formData();
-  const values = Object.fromEntries(formData);
-  console.log(values);
-
-  throw new Error("Error al crear la cuenta");
-}
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Signup() {
-  const submit = useSubmit();
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   const validationSchema = yup.object({
-    name: yup
+    username: yup
       .string()
       .min(3, "El nombre debe tener al menos 3 caracteres")
       .max(15, "El nombre no puede tener más de 15 caracteres")
       .required("Nombre es requerido"),
-    surname: yup
-      .string()
-      .min(3, "El apellido debe tener al menos 3 caracteres")
-      .max(15, "El apellido no puede tener más de 15 caracteres")
-      .required("Apellido es requerido"),
     email: yup.string().email("Email inválido").required("Email es requerido"),
     password: yup
       .string()
@@ -51,15 +40,51 @@ export default function Signup() {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      surname: "",
+      username: "",
       email: "",
       password: "",
       repeatPassword: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      submit(values, { method: "post" });
+    onSubmit: async (values) => {
+      const payload = { ...values };
+      delete payload.repeatPassword;
+
+      try {
+        const response = await fetch(`${API_URL}/auth/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+
+        navigate("/verify", { state: { email: values.email } });
+        return null;
+      } catch (error) {
+        console.error(`Error ${error.message}`);
+        Swal.fire({
+          icon: "error",
+          html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+            Hubo un problema al crear tu cuenta.
+            Si el problema persiste puedes <a class="underline" href=mailto:serviciostecnicospruebasservic@gmail.com">contactar a soporte</a>.
+          </p>
+          
+        `,
+          footer: `
+                 <details class="text-sm cursor-pointer text-gray-500">
+                   <summary>Detalles del error</summary>
+                   <p>Código de error: ${error}</p>
+                 </details>
+               `,
+          confirmButtonColor: "#33B8AD",
+        });
+      }
     },
   });
 
@@ -74,19 +99,11 @@ export default function Signup() {
       >
         <FormInput
           type="text"
-          id="name"
+          id="username"
           label="Nombre"
-          fieldProps={formik.getFieldProps("name")}
-          errorMessage={formik.errors.name}
-          showError={formik.touched.name && formik.errors.name}
-        />
-        <FormInput
-          type="text"
-          id="surname"
-          fieldProps={formik.getFieldProps("surname")}
-          label="Apellido"
-          errorMessage={formik.errors.surname}
-          showError={formik.touched.surname && formik.errors.surname}
+          fieldProps={formik.getFieldProps("username")}
+          errorMessage={formik.errors.username}
+          showError={formik.touched.username && formik.errors.username}
         />
         <FormInput
           type="email"
@@ -115,14 +132,13 @@ export default function Signup() {
           }
         />
         <button
-          className="px-10 mt-8 hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
+          className="px-10 mt-8 disabled:bg-tertiary disabled:text-primary hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
           type="submit"
+          disabled={formik.isSubmitting}
         >
-          Registrarme
+          {formik.isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
         </button>
       </form>
     </main>
   );
 }
-
-Signup.action = action;

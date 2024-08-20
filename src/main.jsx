@@ -7,8 +7,9 @@ import Layout from "@/layout/Layout";
 import Home from "@/routes";
 
 import Profile from "@/routes/profile";
-import Signin from "@/routes/signin";
+import Login from "@/routes/login";
 import Signup from "@/routes/signup";
+import Verify from "@/routes/verify";
 
 import Dashboard from "@/routes/dashboard";
 import Users from "@/routes/dashboard/users";
@@ -23,12 +24,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home />, loader: Home.loader },
       { path: "/profile", element: <Profile /> },
-      { path: "/signin", element: <Signin /> },
+      { path: "/login", element: <Login /> },
       {
         path: "/signup",
         element: <Signup />,
-        action: Signup.action,
-        errorElement: <div>Hubo un error </div>,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
       },
       { path: "/services/:id", element: <Detail />, loader: Detail.loader },
       {
