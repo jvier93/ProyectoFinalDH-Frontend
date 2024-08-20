@@ -8,9 +8,10 @@ export default {
         primaryLight: "#00A699",
         secondary: "#99DBD6",
         secondaryLight: "#CCEDEB",
+        tertiary: "#D9D9D9",
       },
       borderRadius: {
-        'full':'43px'
+        full: "43px",
       },
       fontFamily: { Inter: ["Inter", "serif"] },
     },
