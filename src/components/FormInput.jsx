@@ -4,6 +4,7 @@ const FormInput = ({
   label,
   fieldProps, // an array from formik of [name, value, handleChange, handleBlur]
   showError,
+  placeholder,
   errorMessage,
 }) => {
   return (
@@ -12,6 +13,7 @@ const FormInput = ({
         {label}
       </label>
       <input
+        placeholder={placeholder}
         className="bg-tertiary text-sm py-2 text-center text-primaryLight"
         id={id}
         type={type}

@@ -11,7 +11,6 @@ async function loader() {
   const servicesResponse = await fetch(`${API_URL}/products/random`);
 
   const categories = await categoriesResponse.json();
-  console.log(categories);
 
   const services = await servicesResponse.json();
 

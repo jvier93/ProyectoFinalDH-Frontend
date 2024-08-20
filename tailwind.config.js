@@ -14,6 +14,10 @@ export default {
         full: "43px",
       },
       fontFamily: { Inter: ["Inter", "serif"] },
+      animation: {
+        fadeIn: "fadeIn 0.2s ",
+        fadeIn1: "fadeIn 1s ease-in-out",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
