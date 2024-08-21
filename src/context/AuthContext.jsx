@@ -9,6 +9,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (data) => {
     setUser(data);
+
+    if (data.role === "admin") {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
   };
 
   const logout = () => {

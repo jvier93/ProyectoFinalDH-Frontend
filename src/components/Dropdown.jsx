@@ -7,16 +7,19 @@ import DropdownItem from "@/components/DropdownItem";
 
 export const Dropdown = ({ isSmallScreen }) => {
   const { user, logout } = useAuth();
-  const nameInitials = `${user.name.charAt(0)}${user.surname.charAt(
-    0
-  )}`.toUpperCase();
+  // const nameInitials = `${user.name.charAt(0)}${user.surname.charAt(
+  //   0
+  // )}`.toUpperCase();
 
+  // The 'show' property in the dropdownItems array is an expression. When rendering those items,
+  // we evaluate the 'show' expression, and if it's true, the corresponding link is rendered.
   const dropdownItems = [
-    { type: "link", text: "Profile", link: "/profile" },
-    { type: "link", text: "Dashboard", link: "/" },
+    { show: true, type: "link", text: "Mi perfil", link: "/profile" },
+    { show: user.role === "admin", type: "link", text: "Dashboard", link: "/" },
     {
+      show: true,
       type: "button",
-      text: "Logout",
+      text: "Cerrar sesión",
       action: (event) => {
         event.stopPropagation();
         logout();
@@ -45,7 +48,7 @@ export const Dropdown = ({ isSmallScreen }) => {
         onClick={() => setDropDownOpen(!dropDownOpen)}
         className=" cursor-pointer select-none w-36 md:w-full rounded-full bg-white px-6 text-primary    hover:text-brand-red hover:underline"
       >
-        <span className="">{nameInitials}</span>
+        <span className="">{user.username || "no name"}</span>
 
         <FontAwesomeIcon
           size="lg"
@@ -60,13 +63,16 @@ export const Dropdown = ({ isSmallScreen }) => {
             dropDownOpen ? "block" : "hidden"
           }`}
         >
-          {dropdownItems.map((item, index) => (
-            <DropdownItem
-              item={item}
-              key={index}
-              closeDropdown={closeDropdown}
-            />
-          ))}
+          {dropdownItems.map(
+            (item, index) =>
+              item.show && (
+                <DropdownItem
+                  item={item}
+                  key={index}
+                  closeDropdown={closeDropdown}
+                />
+              )
+          )}
         </ul>
       </div>
     </div>

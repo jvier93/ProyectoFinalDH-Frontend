@@ -6,7 +6,6 @@ import "./index.css";
 
 import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/layout/Layout";
-import ErrorBoundary from "@/components/ErrorBoundary ";
 
 import Home from "@/routes";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -14,13 +13,13 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Profile from "@/routes/profile";
 import Login from "@/routes/login";
 import Signup from "@/routes/signup";
+import Verify from "@/routes/verify";
 
 import Dashboard from "@/routes/dashboard";
 import Users from "@/routes/dashboard/users";
 import Services from "@/routes/dashboard/services";
 
 import Detail from "@/routes/services/[id]";
-import Verify from "@/routes/verify";
 
 const router = createBrowserRouter([
   {
@@ -62,7 +61,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="admin">
                 <Dashboard />
               </ProtectedRoute>
             ),

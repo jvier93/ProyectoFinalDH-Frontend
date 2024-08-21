@@ -21,37 +21,64 @@ export default function Login() {
       password: "",
     },
     validationSchema,
-    //Here we do not execute an action of react router because we do not changing any information, and actions are for change data.
     onSubmit: async (values) => {
+      const payload = { ...values };
+
       try {
-        throw new Error("Usuario o contraseña incorrectos");
-        // const response = await fetch(`${API_URL}/login`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(values),
-        // });
-
-        // if (!response.ok) {
-        //   throw new Error("Usuario o contraseña incorrectos");
-        // }
-
-        // const data = await response.json();
-        // await login(data);
-        // navigate("/");
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Usuario o contrase;a incorrectos",
-          showConfirmButton: false,
-          timer: 2000,
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         });
-        // Swal.fire({
-        //   icon: "error",
-        //   title: "Error",
-        //   text: error.message,
-        // });
+
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+
+        const userSessionData = await response.json();
+        login(userSessionData);
+        return null;
+      } catch (error) {
+        console.error(`Error ${error.message}`);
+
+        if (error.message == 403) {
+          Swal.fire({
+            icon: "error",
+            html: `
+            <p class="text-sm text-gray-500 text-center font-Inter">
+              Usuario o contraseña incorrectos.
+            </p>
+            
+          `,
+            footer: `
+                   <details class="text-sm cursor-pointer text-gray-500">
+                     <summary>Detalles del error</summary>
+                     <p>Código de error: ${error.message}</p>
+                   </details>
+                 `,
+            confirmButtonColor: "#33B8AD",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            html: `
+            <p class="text-sm text-gray-500 text-center font-Inter">
+              Hubo un problema al iniciar sesion.
+              Si el problema persiste puedes <a class="underline" href=mailto:serviciostecnicospruebasservic@gmail.com">contactar a soporte</a>.
+            </p>
+            
+          `,
+            footer: `
+                   <details class="text-sm cursor-pointer text-gray-500">
+                     <summary>Detalles del error</summary>
+                     <p>Código de error: ${error}</p>
+                   </details>
+                 `,
+            confirmButtonColor: "#33B8AD",
+          });
+        }
       }
     },
   });

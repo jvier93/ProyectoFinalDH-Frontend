@@ -56,13 +56,11 @@ export default function Signup() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          const { status, error } = errorData;
-          throw new Error(`${status}: ${error}`);
+          throw new Error(response.status);
         }
 
         navigate("/verify", { state: { email: values.email } });
@@ -71,11 +69,19 @@ export default function Signup() {
         console.error(`Error ${error.message}`);
         Swal.fire({
           icon: "error",
-          html: `<p class="text-sm text-gray-500 text-center font-Inter">Ocurrió un problema al intentar crear tu usuario. 
-                 Si el problema persiste, por favor contacta a soporte en <a href="mailto:serviciostecnicospruebasservic@gmail.com">serviciostecnicospruebasservic@gmail.com</a>.</p>`,
-          footer: `<p class="text-sm text-gray-500">Código de error: ${
-            error.message.split(": ")[0]
-          }</p>`,
+          html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+            Hubo un problema al crear tu cuenta.
+            Si el problema persiste puedes <a class="underline" href=mailto:serviciostecnicospruebasservic@gmail.com">contactar a soporte</a>.
+          </p>
+          
+        `,
+          footer: `
+                 <details class="text-sm cursor-pointer text-gray-500">
+                   <summary>Detalles del error</summary>
+                   <p>Código de error: ${error}</p>
+                 </details>
+               `,
           confirmButtonColor: "#33B8AD",
         });
       }
@@ -130,7 +136,7 @@ export default function Signup() {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          Registrarme
+          {formik.isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
         </button>
       </form>
     </main>
