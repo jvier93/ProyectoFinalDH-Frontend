@@ -55,7 +55,7 @@ export default function UserDetail() {
       .required("Rol es requerido"), // Asegura que el rol es obligatorio
   });
 
-  const userRole = userDetails?.roles[0];
+  const userRole = userDetails?.roles[0].match(/name=([A-Z]+)/)[1];
   function mapUserRoleNameToUserRoleId(roleName) {
     switch (roleName) {
       case "ADMIN":

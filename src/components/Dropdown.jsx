@@ -13,7 +13,7 @@ export const Dropdown = ({ isSmallScreen }) => {
   const dropdownItems = [
     { show: true, type: "link", text: "Mi perfil", link: "/profile" },
     {
-      show: user.roles[0].name === "ADMIN",
+      show: user.roles[0] === "ADMIN",
       type: "link",
       text: "Dashboard",
       link: "/dashboard",

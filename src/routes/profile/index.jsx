@@ -33,7 +33,7 @@ const Profile = () => {
         <div className="flex flex-col gap-2">
           <h2 className="font-bold">Información adicional</h2>
           <div>
-            <p>Rol: {user.roles[0].name}</p>
+            <p>Rol: {user.roles[0]}</p>
           </div>
         </div>
       </section>

@@ -50,7 +50,7 @@ export const ProtectedRoute = ({ children, requiredRole = null }) => {
 
   //Verify if user has the required role to access the route
   //by default requiredRole is null
-  if (requiredRole && user.roles[0].name !== requiredRole) {
+  if (requiredRole && user.roles[0] !== requiredRole) {
     return <Navigate to="/login" />;
   }
   return children;

@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 export default function Login() {
   const API_URL = import.meta.env.VITE_API_URL;
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const validationSchema = yup.object({
     email: yup.string().email("Email inválido").required("Email es requerido"),
