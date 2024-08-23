@@ -23,7 +23,7 @@ const Verify = () => {
       const payload = { email, verificationCode: values.verificationCode };
 
       try {
-        const response = await fetch(`${API_URL}/auth/verify`, {
+        const response = await fetch(`${API_URL}/verify/user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

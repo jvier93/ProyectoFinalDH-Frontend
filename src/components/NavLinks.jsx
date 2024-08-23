@@ -1,22 +1,45 @@
-import { Link } from "react-router-dom";
+import { Dropdown } from "@/components/Dropdown";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
-export const NavLinks = () => {
+export const NavLinks = ({ isSmallScreen }) => {
+  const { user } = useAuth();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // The 'show' property in the links array is an expression. When rendering the links,
+  // we evaluate the 'show' expression, and if it's true, the corresponding link is rendered.
+
   const links = [
-    { id: 1, name: "Crear cuenta", path: "/signup" },
-    { id: 2, name: "Iniciar sesion", path: "#" },
+    {
+      id: 1,
+      show: !user && currentPath !== "/signup",
+      name: "Crear cuenta",
+      path: "/signup",
+    },
+    {
+      id: 2,
+      show: !user && currentPath !== "/login",
+      name: "Iniciar sesión",
+      path: "/login",
+    },
   ];
 
   return (
     <>
-      {links.map((link) => (
-        <Link
-          className="rounded-full bg-white px-6 text-tertiary"
-          key={link.id}
-          to={link.path}
-        >
-          {link.name}
-        </Link>
-      ))}
+      {links.map(
+        (link) =>
+          link.show && (
+            <Link
+              className="rounded-full bg-white px-6 text-primary"
+              key={link.id}
+              to={link.path}
+            >
+              {link.name}
+            </Link>
+          )
+      )}
+      {user && <Dropdown isSmallScreen={isSmallScreen} />}
     </>
   );
 };

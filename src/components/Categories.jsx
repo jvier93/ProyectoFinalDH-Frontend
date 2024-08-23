@@ -7,7 +7,7 @@ export const Categories = ({ categories }) => {
         Categorias disponibles
       </h1>
       <Slider data={categories}></Slider>
-      <div className="h-16 bg-primary"></div>
+      <div className="h-16  bg-primary"></div>
     </section>
   );
 };
