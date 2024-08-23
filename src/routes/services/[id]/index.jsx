@@ -10,7 +10,6 @@ async function loader({ params }) {
   const detailsResponse = await fetch(
     `${API_URL}/products/details/${params.id}`
   );
-  //const serviceProperties = properties.filter(property => detailsResponse && detailsResponse.propertyId.includes(property.id)) || [];
 
   const serviceProperties = properties
 
