@@ -27,7 +27,7 @@ const User = ({ user }) => {
       <div className="mr-2 text-sm text-left rounded-md flex p-2 gap-8  bg-gray-50">
         <div className="space-y-2">
           <p className=" text-gray-400">Rol</p>
-          <p className="">Admin</p>
+          <p className="">{user.roles[0]}</p>
         </div>
         <div className="space-y-2">
           <p className=" text-gray-400">Activado</p>

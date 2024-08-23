@@ -13,6 +13,7 @@ const loader = async () => {
       throw new Error(response.status);
     }
     const users = await response.json();
+    console.log(users);
 
     return {
       users,

@@ -7,8 +7,6 @@ import Swal from "sweetalert2";
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function loader({ params }) {
-  console.log(`${API_URL}/users/details/${params.id}`);
-
   try {
     const response = await fetch(`${API_URL}/users/details/${params.id}`);
 
@@ -56,7 +54,6 @@ export default function UserDetail() {
       .oneOf(["1", "2"], "Rol inválido") // Valida que el rol sea uno de los valores permitidos
       .required("Rol es requerido"), // Asegura que el rol es obligatorio
   });
-  console.log(userDetails.roles[0]);
 
   const userRole = userDetails?.roles[0];
   function mapUserRoleNameToUserRoleId(roleName) {
@@ -79,15 +76,9 @@ export default function UserDetail() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const payload = {
-        userId: Number(values.id),
-        roleIds: [Number(values.role)],
-      };
-      console.log(payload);
-
       try {
         const response = await fetch(
-          `${API_URL}/users/update-roles/userId=${values.id}&roleIds=${values.role}`,
+          `${API_URL}/users/update-roles?userId=${values.id}&roleIds=${values.role}`,
           {
             method: "PUT",
           }
