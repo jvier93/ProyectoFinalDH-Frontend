@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/components/Search";
+import { properties } from "@/data/properties";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -9,7 +10,9 @@ async function loader({ params }) {
   const detailsResponse = await fetch(
     `${API_URL}/products/details/${params.id}`
   );
-  const serviceProperties = properties.filter(property => detailsResponse && detailsResponse.propertyId.includes(property.id)) || [];
+  //const serviceProperties = properties.filter(property => detailsResponse && detailsResponse.propertyId.includes(property.id)) || [];
+
+  const serviceProperties = properties
 
   const details = await detailsResponse.json();
 
