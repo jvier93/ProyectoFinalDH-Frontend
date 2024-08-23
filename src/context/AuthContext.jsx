@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (data) => {
+    console.log(data);
+
     setUser(data);
 
     if (data.role === "admin") {

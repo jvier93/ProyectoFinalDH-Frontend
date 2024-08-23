@@ -38,12 +38,13 @@ export default function Login() {
         }
 
         const userSessionData = await response.json();
+
         login(userSessionData);
         return null;
       } catch (error) {
         console.error(`Error ${error.message}`);
 
-        if (error.message == 403) {
+        if (error.message == 403 || error.message == 404) {
           Swal.fire({
             icon: "error",
             html: `

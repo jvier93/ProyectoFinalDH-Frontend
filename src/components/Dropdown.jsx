@@ -7,15 +7,17 @@ import DropdownItem from "@/components/DropdownItem";
 
 export const Dropdown = ({ isSmallScreen }) => {
   const { user, logout } = useAuth();
-  // const nameInitials = `${user.name.charAt(0)}${user.surname.charAt(
-  //   0
-  // )}`.toUpperCase();
 
   // The 'show' property in the dropdownItems array is an expression. When rendering those items,
   // we evaluate the 'show' expression, and if it's true, the corresponding link is rendered.
   const dropdownItems = [
     { show: true, type: "link", text: "Mi perfil", link: "/profile" },
-    { show: user.role === "admin", type: "link", text: "Dashboard", link: "/" },
+    {
+      show: user.roles[0].name === "ADMIN",
+      type: "link",
+      text: "Dashboard",
+      link: "/dashboard",
+    },
     {
       show: true,
       type: "button",
