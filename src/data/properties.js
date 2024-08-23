@@ -1,32 +1,34 @@
+import { faAward, faLeaf, faStar, faShieldAlt, faDollarSign, faClock } from '@fortawesome/free-solid-svg-icons';
+
 export const properties = [
     {
         id: 1,
         pname: 'garantia',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faAward
     },
     {
         id: 2,
         pname: 'eco-friendly',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faLeaf
     },
     {
         id: 3,
         pname: 'profesional calificado',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faStar
     },
     {
         id: 4,
         pname: 'calidad',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faShieldAlt
     },
     {
         id: 5,
         pname: 'precios bajos',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faDollarSign
     },
     {
         id: 6,
         pname: 'sin demoras',
-        icon: <FontAwesomeIcon icon={faAward} style={{color: "#000000",}} />
+        icon: faClock
     },
   ];
