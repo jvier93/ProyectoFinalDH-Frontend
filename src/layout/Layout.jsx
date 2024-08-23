@@ -8,7 +8,7 @@ const Layout = () => {
     <div className=" font-Inter flex flex-col min-h-screen">
       <Header />
 
-      <div className="flex-grow">
+      <div className="flex-grow ">
         <Outlet />
       </div>
 

@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/components/Search";
+import { properties } from "@/data/properties";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -9,16 +10,18 @@ async function loader({ params }) {
   const detailsResponse = await fetch(
     `${API_URL}/products/details/${params.id}`
   );
+  const serviceProperties = properties;
 
   const details = await detailsResponse.json();
 
   return {
     details,
+    serviceProperties,
   };
 }
 
 const Detail = () => {
-  const { details } = useLoaderData();
+  const { details, serviceProperties } = useLoaderData();
 
   const navigate = useNavigate();
   const handleGoBack = () => {
@@ -77,6 +80,31 @@ const Detail = () => {
           Agendar servicio
         </button>
       </div>
+      <div className="h-96 text-primaryLight">
+        <h3 className="flex ml-20  text-xl lg:text-4xl">
+          Características del Servicio
+        </h3>
+        <div className="grid mt-12 grid-cols-2 items-center lg:grid-cols-3 gap-y-6">
+          {serviceProperties.length > 0 ? (
+            serviceProperties.map((property) => (
+              <div
+                key={property.id}
+                className="flex items-center  md:justify-center"
+              >
+                <FontAwesomeIcon
+                  icon={property.icon}
+                  className="text-xl md:text-2xl lg:text-3xl mx-4"
+                  style={{ color: "#000000" }}
+                />
+                <p className="lg md:text-xl lg:text-2xl">{property.pname}</p>
+              </div>
+            ))
+          ) : (
+            <p>No hay características disponibles.</p>
+          )}
+        </div>
+      </div>
+      <div className="hidden md:block h-24 bg-primary"></div>
     </div>
   );
 };

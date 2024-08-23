@@ -7,7 +7,7 @@ export const FeaturedServices = ({ services }) => {
         <h1 className="text-center text-xl  text-primary lg:text-4xl">
           Servicios recomendados
         </h1>
-        <div className="grid h-80 justify-items-center grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-8 max-w-screen-2xl mx-auto">
+        <div className="grid  justify-items-center grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-8 max-w-screen-2xl mx-auto">
           {services?.map((item, index) => {
             return (
               <Service
