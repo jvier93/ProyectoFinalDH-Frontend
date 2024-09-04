@@ -18,6 +18,7 @@ async function loader({ params }) {
     return { userDetails };
   } catch (error) {
     Swal.fire({
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
       icon: "error",
       html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
@@ -93,6 +94,7 @@ export default function UserDetail() {
       } catch (error) {
         console.error(`Error ${error.message}`);
         Swal.fire({
+          scrollbarPadding: false, // Disables extra space reserved for the scrollbar
           icon: "error",
           html: `
           <p class="text-sm text-gray-500 text-center font-Inter">

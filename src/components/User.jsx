@@ -14,13 +14,14 @@ const User = ({ user }) => {
             Funcionalidad no disponible
         </p>
       `,
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
       showConfirmButton: false,
       timer: 1500,
     });
   };
 
   return (
-    <article className="w-full space-y-4  border rounded-md p-4">
+    <article className="w-full bg-white space-y-4  border rounded-md p-4">
       <div>
         <p className=" text-xl">{user.username}</p>
         <p className="text-gray-500 font-light">{user.email}</p>
