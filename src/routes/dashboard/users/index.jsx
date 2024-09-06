@@ -19,6 +19,7 @@ const loader = async () => {
     };
   } catch (error) {
     Swal.fire({
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
       icon: "error",
       html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
@@ -49,6 +50,12 @@ export default function Users() {
       </h1>
       <section className="  md:px-10 px-2 py-8 sm:px-6">
         <DataGridContainer>
+          {users?.map((user) => (
+            <User key={user.id} user={user} />
+          ))}
+          {users?.map((user) => (
+            <User key={user.id} user={user} />
+          ))}
           {users?.map((user) => (
             <User key={user.id} user={user} />
           ))}

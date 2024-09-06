@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ServiceSearchItem = ({
-  service: { id, imageUrl, name, category },
+  service: { id, urlImage, name, categoryName },
   keyword,
 }) => {
   const highlightMatch = (text, keyword) => {
@@ -15,7 +15,7 @@ const ServiceSearchItem = ({
     <Link to={"/services/" + id}>
       <li className="p-1 bg-white hover:bg-gray-50  flex">
         <img
-          src={imageUrl}
+          src={urlImage}
           className="w-44 md:w-60 hidden sm:block h-20 object-cover"
         />
         <div className="p-2">
@@ -24,7 +24,7 @@ const ServiceSearchItem = ({
               __html: highlightMatch(name, keyword),
             }}
           />
-          <p className="text-gray-500 font-light">{category}</p>
+          <p className="text-gray-500 font-light">{categoryName}</p>
         </div>
       </li>
     </Link>

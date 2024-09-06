@@ -21,6 +21,7 @@ export const ProtectedRoute = ({ children, requiredRole = null }) => {
       navigate("/login");
     } else if (isTokenExpired(user.token)) {
       Swal.fire({
+        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
         icon: "warning",
         html: `
           <p class="text-sm text-gray-500 text-center font-Inter">

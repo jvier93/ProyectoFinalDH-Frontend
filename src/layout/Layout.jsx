@@ -5,7 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 
 const Layout = () => {
   return (
-    <div className=" font-Inter flex flex-col min-h-screen">
+    <div className="bg-slate-100 font-Inter flex flex-col min-h-screen">
       <Header />
 
       <div className="flex-grow ">

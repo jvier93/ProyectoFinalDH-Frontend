@@ -21,6 +21,8 @@ import Services from "@/routes/dashboard/services";
 
 import Detail from "@/routes/services/[id]";
 import UserDetail from "@/routes/dashboard/users/[id]";
+import NewService from "@/routes/dashboard/services/new";
+import ServiceDetail from "./components/ServiceDetail";
 
 const router = createBrowserRouter([
   {
@@ -88,11 +90,31 @@ const router = createBrowserRouter([
 
           {
             path: "/dashboard/services",
+            loader: Services.loader,
             element: (
               <ProtectedRoute requiredRole="ADMIN">
                 <Services />
               </ProtectedRoute>
             ),
+          },
+
+          {
+            path: "/dashboard/services/new",
+            loader: NewService.loader,
+            element: (
+              <ProtectedRoute requiredRole="ADMIN">
+                <NewService />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/service/:id/edit",
+            element: (
+              <ProtectedRoute requiredRole="ADMIN">
+                <ServiceDetail />
+              </ProtectedRoute>
+            ),
+            loader: ServiceDetail.loader,
           },
         ],
       },
