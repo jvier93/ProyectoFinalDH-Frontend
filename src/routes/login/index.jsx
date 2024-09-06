@@ -45,6 +45,7 @@ export default function Login() {
 
         if (error.message == 403 || error.message == 404) {
           Swal.fire({
+            scrollbarPadding: false, // Disables extra space reserved for the scrollbar
             icon: "error",
             html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
@@ -62,6 +63,7 @@ export default function Login() {
           });
         } else {
           Swal.fire({
+            scrollbarPadding: false, // Disables extra space reserved for the scrollbar
             icon: "error",
             html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
