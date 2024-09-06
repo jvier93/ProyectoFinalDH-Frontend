@@ -91,7 +91,7 @@ export default function Login() {
         Iniciar sesion
       </h1>
       <form
-        className="flex py-10 w-4/5 lg:w-1/3 mx-auto flex-col gap-4"
+        className="flex py-10 w-4/5 lg:w-1/3 mx-auto items-center flex-col gap-4"
         onSubmit={formik.handleSubmit}
       >
         <FormInput

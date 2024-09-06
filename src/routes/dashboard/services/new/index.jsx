@@ -53,33 +53,8 @@ const loader = async () => {
 
 export default function NewService() {
   const { features, categories } = useLoaderData();
-  console.log(categories);
 
   const navigate = useNavigate();
-
-  // const features = [
-  //   "Tutoriales",
-  //   "Cursos",
-  //   "Noticias",
-  //   "Foros",
-  //   "Viajes",
-  //   "Comunidad",
-  //   "Juegos",
-  //   "Deportes",
-  //   "Música",
-  // ];
-
-  // const categories = [
-  //   "Tutoriales",
-  //   "Cursos",
-  //   "Noticias",
-  //   "Foros",
-  //   "Viajes",
-  //   "Comunidad",
-  //   "Juegos",
-  //   "Deportes",
-  //   "Música",
-  // ];
 
   const validationSchema = yup.object({
     name: yup
@@ -97,12 +72,17 @@ export default function NewService() {
       .min(20, "La descripción no puede tener menos de 20 caracteres")
       .max(50, "La descripción no puede tener más de 50 caracteres"),
     category: yup
-      .string()
-      .oneOf(
-        categories?.map((category) => category.name),
-        "Categoria inválida"
-      ) // Valida que el rol sea uno de los valores permitidos
-      .required("La categoria es requerida"), // Asegura que el rol es obligatorio
+      .object({
+        name: yup
+          .string()
+          .oneOf(
+            categories?.map((category) => category.name),
+            "Categoría inválida"
+          )
+          .required("El nombre de la categoría es requerido"),
+      })
+      .required("La categoría es requerida"),
+
     image: yup
       .mixed()
       .required("La imagen del servicio es requerida")
@@ -129,8 +109,6 @@ export default function NewService() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const payload = { ...values };
-
       const uploadImageToCloudinary = async (imageFile) => {
         const formData = new FormData();
         formData.append("file", imageFile);
@@ -150,8 +128,16 @@ export default function NewService() {
       };
       try {
         const imageUrl = await uploadImageToCloudinary(values.image);
+        const payload = {
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          categoryId: values.category.id,
+          urlImage: imageUrl,
+          characteristics: values.features,
+        };
 
-        const response = await fetch(`${API_URL}/services/new`, {
+        const response = await fetch(`${API_URL}/products/new`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

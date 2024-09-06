@@ -19,7 +19,6 @@ const TagSelector = ({
         ?.includes(query.toLocaleLowerCase().trim()) &&
       !selectedFeatures.includes(item?.name)
   );
-  console.log(selectedFeatures);
 
   return (
     <div className="flex flex-col text-sm gap-1 ">

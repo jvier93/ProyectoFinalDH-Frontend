@@ -10,3 +10,45 @@
 html {
   overflow-y: scroll;
 }
+
+/* React Multi Date Picker Styles */
+
+/* Since there is not a way to make custom styles for this popup component, 
+   we need to re-rwite some of them */
+
+/* For arrows to change between months */
+
+.rmdp-day:not(.rmdp-disabled, .rmdp-day-hidden) span:hover {
+  background-color: #33b8ad !important;
+}
+
+.rmdp-arrow {
+  border-color: #33b8ad !important;
+}
+
+.rmdp-arrow-container:hover {
+  background-color: #33b8ad !important;
+}
+
+.rmdp-arrow-container:hover i {
+  border-color: white !important;
+}
+
+/* For selected range of days */
+
+.rmdp-range {
+  background-color: #ccedeb !important;
+  box-shadow: none !important;
+  color: #33b8ad !important;
+}
+
+/* For every day */
+
+.rmdp-week-day {
+  color: #33b8ad !important;
+}
+
+/* For today span */
+.rmdp-today span {
+  background-color: #33b8ad !important;
+}

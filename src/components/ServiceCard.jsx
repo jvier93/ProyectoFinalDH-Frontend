@@ -5,8 +5,6 @@ import Swal from "sweetalert2";
 
 //Card for service on dashboard panel
 const ServiceCard = ({ service }) => {
-  console.log(service);
-
   const handleDeleteUser = () => {
     Swal.fire({
       scrollbarPadding: false, // Disables extra space reserved for the scrollbar
