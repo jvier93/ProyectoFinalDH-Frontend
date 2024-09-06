@@ -17,7 +17,8 @@ const SelectInput = ({
   errorMessage,
   showError,
 }) => {
-  console.log(showError, errorMessage);
+  console.log(options);
+  console.log(selectedOption);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const inputRef = useRef();
@@ -75,11 +76,11 @@ const SelectInput = ({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => {
                       setMenuOpen(true);
-                      setSelectedOption("category", option);
+                      setSelectedOption("category", option.name);
                     }}
                   >
-                    <span className="flex-1">{option}</span>
-                    {selectedOption.includes(option) && (
+                    <span className="flex-1">{option.name}</span>
+                    {selectedOption.includes(option.name) && (
                       <FontAwesomeIcon
                         className="text-primary"
                         icon={faCheck}

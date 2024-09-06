@@ -37,11 +37,11 @@ const ServiceCard = ({ service }) => {
         <div className="mr-2 text-sm  text-left rounded-md flex p-2 gap-8  bg-gray-50">
           <div className="space-y-2">
             <p className=" text-gray-400">Caracteristicas</p>
-            <p className="">{9}</p>
+            <p className="">{service?.characteristics.length}</p>
           </div>
           <div className="space-y-2">
             <p className=" text-gray-400">Precio</p>
-            <p className="">{208}</p>
+            <p className="">{service?.price}</p>
           </div>
         </div>
         <div className="flex gap-2">

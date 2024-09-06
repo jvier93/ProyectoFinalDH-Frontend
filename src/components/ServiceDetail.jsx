@@ -12,11 +12,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const loader = async ({ params }) => {
   try {
-    const featuresResponse = await fetch("/api/features");
-    const categoriesResponse = await fetch("/api/categories");
     const serviceResponse = await fetch(
-      `${API_URL}/service/details/${params.id}`
+      `${API_URL}/products/details/${params.id}`
     );
+
+    const featuresResponse = await fetch(`${API_URL}/characteristics`);
+    const categoriesResponse = await fetch(`${API_URL}/categories`);
     if (!featuresResponse.ok || !categoriesResponse.ok || !serviceResponse.ok) {
       throw new Error("Error al traer los datos");
     }
@@ -24,6 +25,9 @@ const loader = async ({ params }) => {
     const features = await featuresResponse.json();
     const categories = await categoriesResponse.json();
     const service = await serviceResponse.json();
+    console.log(service);
+
+    console.log(categories);
 
     return {
       features,
@@ -54,39 +58,39 @@ const loader = async ({ params }) => {
 };
 
 export default function ServiceDetail() {
-  //const {features, categories, service} = useLoaderData()
+  const { features, categories, service } = useLoaderData();
   const navigate = useNavigate();
-  const service = {
-    name: "Servicio de prueba",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    features: ["Tutoriales", "Cursos", "Noticias", "Foros", "Viajes"],
-    category: "Tutoriales",
-    price: 100,
-    imageUrl: "/images/services/calefaccion.jpeg",
-  };
-  const features = [
-    "Tutoriales",
-    "Cursos",
-    "Noticias",
-    "Foros",
-    "Viajes",
-    "Comunidad",
-    "Juegos",
-    "Deportes",
-    "Música",
-  ];
+  // const service = {
+  //   name: "Servicio de prueba",
+  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  //   features: ["Tutoriales", "Cursos", "Noticias", "Foros", "Viajes"],
+  //   category: "Tutoriales",
+  //   price: 100,
+  //   imageUrl: "/images/services/calefaccion.jpeg",
+  // };
+  // const features = [
+  //   "Tutoriales",
+  //   "Cursos",
+  //   "Noticias",
+  //   "Foros",
+  //   "Viajes",
+  //   "Comunidad",
+  //   "Juegos",
+  //   "Deportes",
+  //   "Música",
+  // ];
 
-  const categories = [
-    "Tutoriales",
-    "Cursos",
-    "Noticias",
-    "Foros",
-    "Viajes",
-    "Comunidad",
-    "Juegos",
-    "Deportes",
-    "Música",
-  ];
+  // const categories = [
+  //   "Tutoriales",
+  //   "Cursos",
+  //   "Noticias",
+  //   "Foros",
+  //   "Viajes",
+  //   "Comunidad",
+  //   "Juegos",
+  //   "Deportes",
+  //   "Música",
+  // ];
 
   const validationSchema = yup.object({
     name: yup
@@ -105,7 +109,10 @@ export default function ServiceDetail() {
       .max(50, "La descripción no puede tener más de 50 caracteres"),
     category: yup
       .string()
-      .oneOf([...categories], "Categoria inválida") // Valida que el rol sea uno de los valores permitidos
+      .oneOf(
+        categories?.map((category) => category.name),
+        "Categoria inválida"
+      ) // Valida que el rol sea uno de los valores permitidos
       .required("La categoria es requerida"), // Asegura que el rol es obligatorio
     image: yup
       .mixed()
@@ -117,7 +124,7 @@ export default function ServiceDetail() {
           // If the value is a string that starts with 'http', it indicates that the image is provided by the server
           //and not by the user in this case of course, the value is considered valid
 
-          if (typeof value === "string" && value.startsWith("http")) {
+          if (typeof value === "string") {
             return true;
           }
           return (
@@ -132,10 +139,10 @@ export default function ServiceDetail() {
     initialValues: {
       name: service?.name,
       description: service?.description,
-      category: service?.category,
-      features: [...service.features] || [],
+      category: service?.categoryName,
+      features: service?.features || [],
       price: service?.price,
-      image: service?.imageUrl,
+      image: service?.urlImage,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -193,7 +200,7 @@ export default function ServiceDetail() {
   return (
     <main className="mt-20 md:mt-28 ">
       <h1 className="text-center text-xl text-primary  lg:text-4xl">
-        Nuevo servicio
+        Editar servicio
       </h1>
       <form
         onSubmit={formik.handleSubmit}

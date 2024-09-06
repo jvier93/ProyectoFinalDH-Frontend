@@ -9,18 +9,20 @@ import ImageInput from "@/components/ImageInput";
 import SelectInput from "../../../../components/SelectInput";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
 const loader = async () => {
   try {
-    const featuresResponse = await fetch("/api/features");
-    const categoriesResponse = await fetch("/api/categories");
+    const featuresResponse = await fetch(`${API_URL}/characteristics`);
+    const categoriesResponse = await fetch(`${API_URL}/categories`);
 
     if (!featuresResponse.ok || !categoriesResponse.ok) {
       throw new Error("Error al traer los datos");
     }
 
-    const features = await featuresResponse.json();
     const categories = await categoriesResponse.json();
+
+    const features = await featuresResponse.json();
 
     return {
       features,
@@ -50,32 +52,34 @@ const loader = async () => {
 };
 
 export default function NewService() {
-  //const {features, categories} = useLoaderData()
+  const { features, categories } = useLoaderData();
+  console.log(categories);
+
   const navigate = useNavigate();
 
-  const features = [
-    "Tutoriales",
-    "Cursos",
-    "Noticias",
-    "Foros",
-    "Viajes",
-    "Comunidad",
-    "Juegos",
-    "Deportes",
-    "Música",
-  ];
+  // const features = [
+  //   "Tutoriales",
+  //   "Cursos",
+  //   "Noticias",
+  //   "Foros",
+  //   "Viajes",
+  //   "Comunidad",
+  //   "Juegos",
+  //   "Deportes",
+  //   "Música",
+  // ];
 
-  const categories = [
-    "Tutoriales",
-    "Cursos",
-    "Noticias",
-    "Foros",
-    "Viajes",
-    "Comunidad",
-    "Juegos",
-    "Deportes",
-    "Música",
-  ];
+  // const categories = [
+  //   "Tutoriales",
+  //   "Cursos",
+  //   "Noticias",
+  //   "Foros",
+  //   "Viajes",
+  //   "Comunidad",
+  //   "Juegos",
+  //   "Deportes",
+  //   "Música",
+  // ];
 
   const validationSchema = yup.object({
     name: yup
@@ -94,7 +98,10 @@ export default function NewService() {
       .max(50, "La descripción no puede tener más de 50 caracteres"),
     category: yup
       .string()
-      .oneOf([...categories], "Categoria inválida") // Valida que el rol sea uno de los valores permitidos
+      .oneOf(
+        categories?.map((category) => category.name),
+        "Categoria inválida"
+      ) // Valida que el rol sea uno de los valores permitidos
       .required("La categoria es requerida"), // Asegura que el rol es obligatorio
     image: yup
       .mixed()
@@ -124,7 +131,26 @@ export default function NewService() {
     onSubmit: async (values) => {
       const payload = { ...values };
 
+      const uploadImageToCloudinary = async (imageFile) => {
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", "ProyectoIntegrador-preset");
+        formData.append("cloud_name", "dixptvyr3"); // Preset de Cloudinary
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const data = await response.json();
+        return data.secure_url; // URL de la imagen subida
+      };
       try {
+        const imageUrl = await uploadImageToCloudinary(values.image);
+
         const response = await fetch(`${API_URL}/services/new`, {
           method: "POST",
           headers: {
@@ -144,7 +170,7 @@ export default function NewService() {
                 <p class="text-sm text-gray-500 text-center font-Inter">
                    Servicio creado con éxito
                 </p>
-                
+
               `,
           confirmButtonColor: "#33B8AD",
         });
@@ -237,6 +263,7 @@ export default function NewService() {
           showError={formik.touched.image && formik.errors.image}
           formik={formik}
         />
+
         <button
           className="px-10 mt-8 disabled:bg-tertiary disabled:text-primary hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
           type="submit"

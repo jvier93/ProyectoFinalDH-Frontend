@@ -14,9 +14,12 @@ const TagSelector = ({
 
   const filteredTags = features.filter(
     (item) =>
-      item?.toLocaleLowerCase()?.includes(query.toLocaleLowerCase().trim()) &&
-      !selectedFeatures.includes(item)
+      item?.name
+        .toLocaleLowerCase()
+        ?.includes(query.toLocaleLowerCase().trim()) &&
+      !selectedFeatures.includes(item?.name)
   );
+  console.log(selectedFeatures);
 
   return (
     <div className="flex flex-col text-sm gap-1 ">
@@ -32,7 +35,7 @@ const TagSelector = ({
                 className="rounded-full w-fit px-3 py-1.5 border  text-gray-500 bg-gray-50 border-gray-400 flex gap-2 items-center "
                 key={feature}
               >
-                {feature}
+                {feature?.name}
 
                 <FontAwesomeIcon
                   // onMouseDown to prevent losing focus and thus avoid closing the dropdown
@@ -99,7 +102,7 @@ const TagSelector = ({
                       ]);
                     }}
                   >
-                    {tag}
+                    {tag?.name}
                   </li>
                 ))
               ) : (

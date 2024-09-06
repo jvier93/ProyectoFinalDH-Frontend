@@ -8,13 +8,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const loader = async () => {
   try {
-    const response = await fetch(`${API_URL}/products/random`);
+    const response = await fetch(`${API_URL}/products/all`);
 
     if (!response.ok) {
       throw new Error(response.status);
     }
     const services = await response.json();
-    console.log(services);
 
     return {
       services,
