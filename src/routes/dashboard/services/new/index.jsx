@@ -60,7 +60,7 @@ export default function NewService() {
     name: yup
       .string()
       .min(3, "El nombre debe tener al menos 3 caracteres")
-      .max(15, "El nombre no puede tener más de 50 caracteres")
+      .max(50, "El nombre no puede tener más de 50 caracteres")
       .required("Nombre es requerido"),
     price: yup
       .number()
@@ -70,7 +70,7 @@ export default function NewService() {
       .string()
       .required("Descripción es requerida")
       .min(20, "La descripción no puede tener menos de 20 caracteres")
-      .max(50, "La descripción no puede tener más de 50 caracteres"),
+      .max(200, "La descripción no puede tener más de 200 caracteres"),
     category: yup
       .object({
         name: yup
@@ -184,6 +184,8 @@ export default function NewService() {
       }
     },
   });
+
+  console.log(formik.values);
 
   return (
     <main className="mt-20 md:mt-28 ">

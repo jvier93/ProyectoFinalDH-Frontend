@@ -40,13 +40,14 @@ const SelectInput = ({
               id={id}
               ref={inputRef}
               readOnly
+              onClick={() => setMenuOpen(true)}
               onFocus={() => setMenuOpen(true)}
               onBlur={() => {
                 setTouched("category", true);
                 setMenuOpen(false);
               }}
               type="text"
-              value={selectedOption.name}
+              value={selectedOption?.name}
               // trimStart() is used to remove whitespace at the beginning of the input value each time the user types something.
               // This ensures that the input does not start with spaces, avoiding issues in validation or processing of the entered value.
 
@@ -72,8 +73,8 @@ const SelectInput = ({
                     key={i}
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => {
-                      setMenuOpen(true);
                       setSelectedOption("category", option);
+                      setMenuOpen(false);
                     }}
                   >
                     <span className="flex-1">{option.name}</span>
@@ -95,7 +96,7 @@ const SelectInput = ({
         ) : null}
       </div>
       {showError && (
-        <span className="text-red-500 text-sm ">{errorMessage}</span>
+        <span className="text-red-500 text-sm ">{errorMessage.name}</span>
       )}
     </div>
   );
