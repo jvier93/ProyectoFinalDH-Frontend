@@ -45,6 +45,7 @@ export default function Login() {
 
         if (error.message == 403 || error.message == 404) {
           Swal.fire({
+            scrollbarPadding: false, // Disables extra space reserved for the scrollbar
             icon: "error",
             html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
@@ -62,6 +63,7 @@ export default function Login() {
           });
         } else {
           Swal.fire({
+            scrollbarPadding: false, // Disables extra space reserved for the scrollbar
             icon: "error",
             html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
@@ -89,7 +91,7 @@ export default function Login() {
         Iniciar sesion
       </h1>
       <form
-        className="flex py-10 w-4/5 lg:w-1/3 mx-auto flex-col gap-4"
+        className="flex py-10 w-4/5 lg:w-1/3 mx-auto items-center flex-col gap-4"
         onSubmit={formik.handleSubmit}
       >
         <FormInput

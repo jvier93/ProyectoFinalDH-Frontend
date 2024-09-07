@@ -27,6 +27,7 @@ async function loader() {
     };
   } catch (error) {
     Swal.fire({
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
       icon: "error",
       html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
