@@ -7,11 +7,12 @@ import { Calendar } from "react-multi-date-picker"
 import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
-import { format, eachDayOfInterval, isWithinInterval } from 'date-fns';
+import { format, eachDayOfInterval, isWithinInterval, isBefore } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 
 const API_URL = import.meta.env.VITE_API_URL;
+const today = new Date();
 
 async function loader({ params }) {
   const detailsResponse = await fetch(
@@ -43,12 +44,24 @@ const Detail = () => {
   };
 
   const handleSchedule = () => {
+
     if (isLoggedIn) {
 
       const [startDate, endDate] = selectedDates;
       const selectedRange = endDate
           ? eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) })
           : [new Date(startDate)];
+
+
+    if (selectedRange.some(date => isBefore(date, today) || date.toDateString() === today.toDateString())) {
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pueden seleccionar hoy, ni fechas anteriores a hoy',
+        icon: 'error',
+        confirmButtonText: 'Atrás',
+      });
+      return;
+    }
 
 
     const hasConflict = selectedRange.some((date) => {
@@ -186,16 +199,16 @@ const Detail = () => {
           </div>
         </div>
 
-        <button className="absolute top-8 right-8">
+        <button className="absolute px-0.5 top-8 right-8 rounded-lg hover:bg-secondaryLight">
           <FontAwesomeIcon
             icon={faArrowLeft}
-            className="text-white sm:text-sm md:text-lg lg:text-2xl xl:text-4xl"
+            className="text-white hover:text-primary sm:text-sm md:text-lg lg:text-2xl xl:text-4xl"
             onClick={handleGoBack}
           />
         </button>
       </div>
-      <div className="flex flex-col justify-center items-center text-primaryLight sm:text-sm md:text-lg lg:text-2xl my-4">
-        Fechas disponibles
+      <div className="flex flex-col space-y-4 items-center text-primaryLight sm:text-sm md:text-lg lg:text-3xl my-4">
+        <p>Fechas disponibles</p>
         <Calendar
         numberOfMonths={2}
         range
@@ -219,7 +232,7 @@ const Detail = () => {
         />
       </div>
       <div className="flex justify-center">
-        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white" onClick={handleSchedule}>
+        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white hover:bg-secondary" onClick={handleSchedule}>
           Agendar servicio
         </button>
       </div>
