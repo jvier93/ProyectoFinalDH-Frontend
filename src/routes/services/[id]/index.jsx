@@ -21,17 +21,19 @@ async function loader({ params }) {
 
   const details = await detailsResponse.json();
 
+  const scheduledDates = details.reservations.map(reservation => reservation.date)
+
   return {
     details,
     serviceProperties,
+    scheduledDates,
   };
 }
 
 const Detail = () => {
-  const { details, serviceProperties } = useLoaderData();
+  const { details, serviceProperties, scheduledDates } = useLoaderData();
   const [selectedDates, setSelectedDates] = useState([]);
   const { isLoggedIn } = useAuth();
-  const [scheduledDates, setScheduledDates] = useState([]);
   
   
 
@@ -71,64 +73,67 @@ const Detail = () => {
         confirmButtonText: 'Atrás',
       });
     } else {
-      Swal.fire({
-        title: 'Confirmar agenda',
-        text: `¿Deseas agendar el servicio para las fechas: ${selectedDates.map(date => format(new Date(date), 'dd/MM/yyyy', { locale: es })).join(' a ')}?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, agendar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setScheduledDates(prevDates => [...prevDates, ...selectedRange.map(date => date.toISOString())]);
+        Swal.fire({
+          title: 'Confirmar agenda',
+          text: `¿Deseas agendar el servicio para las fechas: ${selectedDates.map(date => format(new Date(date), 'dd/MM/yyyy', { locale: es })).join(' a ')}?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, agendar',
+          cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+                const response = await fetch(`${API_URL}/products/details`, {
+                method: 'POST',
+                headers: {
+                 'Content-Type': 'application/json',
+                },
+               body: JSON.stringify({ dates: selectedRange.map(date => date.toISOString().split('T')[0]),  productId: details.id })
+              });
 
-          fetch(`${API_URL}/reservations/save`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ dates: selectedRange.map(date => date.toISOString().split('T')[0]), productId: details.id })
-          })
-          .then(response => response.text())
-          .then(data => {
-            console.log(data);
-
-          console.log("Servicio agendado para las fechas:", selectedDates);
-          Swal.fire({
-            title: '¡Éxito!',
-            text: 'El servicio ha sido agendado.',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          });
-        })
-        .catch(error => {
-          Swal.fire({
-            title: 'Error',
-            text: 'No se pudo guardar la agenda',
-            icon: 'error',
-            confirmButtonText: 'Atrás'
-          });
+              if (response.ok) {
+                Swal.fire({
+                  title: '¡Éxito!',
+                  text: 'El servicio ha sido agendado.',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                });
+              } else {
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo guardar la agenda. Inténtalo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Atrás'
+                  });
+                }
+            } catch (error) {
+                Swal.fire({
+                  title:'Error',
+                  text: 'No se pudo conectar con el servidor. Inténtalo de nuevo',
+                  icon: 'error',
+                  confirmButtonText: 'Atrás'
+              });
+            }
+          }
         });
-      }
-      });
-    }
-  } else {
-      Swal.fire({
-      title: 'Ups!',
-      text: 'Debes estar logueado para agendar el servicio',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Login',
-      cancelButtonText: 'Cancelar'
+      } 
+    } else {
+        Swal.fire({
+          title: 'Ups!',
+          text: 'Debes estar logueado para agendar el servicio',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Login',
+          cancelButtonText: 'Cancelar'
       
     }).then((result) => {
       if (result.isConfirmed) {
         setTimeout(() => {
           navigate('/login');
         }, 500);
-      }
-    });
-  }
+       }
+      });
+    }
   };
 
   const weekDays = ["DO", "LU", "MA", "MI", "JU", "VI", "SA"];
@@ -192,6 +197,7 @@ const Detail = () => {
       <div className="flex flex-col justify-center items-center text-primaryLight sm:text-sm md:text-lg lg:text-2xl my-4">
         Fechas disponibles
         <Calendar
+        numberOfMonths={2}
         range
         rangeHover
         dateSeparator= " a "
