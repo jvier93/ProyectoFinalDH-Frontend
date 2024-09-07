@@ -3,6 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/components/Search";
 import { properties } from "@/data/properties";
+import { Calendar } from "react-multi-date-picker"
+import { useState } from "react";
+import { useAuth } from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
+import { format, eachDayOfInterval, isWithinInterval } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -22,10 +29,117 @@ async function loader({ params }) {
 
 const Detail = () => {
   const { details, serviceProperties } = useLoaderData();
+  const [selectedDates, setSelectedDates] = useState([]);
+  const { isLoggedIn } = useAuth();
+  const [scheduledDates, setScheduledDates] = useState([]);
+  
+  
 
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  const handleSchedule = () => {
+    if (isLoggedIn) {
+
+      const [startDate, endDate] = selectedDates;
+      const selectedRange = endDate
+          ? eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) })
+          : [new Date(startDate)];
+
+
+    const hasConflict = selectedRange.some((date) => {
+      return scheduledDates.some((scheduled) => {
+        if (typeof scheduled === 'string') {
+          const scheduledDate = new Date(scheduled);
+          return scheduledDate.toDateString() === date.toDateString();
+        }
+
+        const scheduledStart = new Date(scheduled.start);
+        const scheduledEnd = new Date(scheduled.end);
+        
+        return isWithinInterval(date, { start: scheduledStart, end: scheduledEnd });
+    });
+    });
+      
+    if (hasConflict) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Algunas de las fechas seleccionadas ya están agendadas',
+        icon: 'error',
+        confirmButtonText: 'Atrás',
+      });
+    } else {
+      Swal.fire({
+        title: 'Confirmar agenda',
+        text: `¿Deseas agendar el servicio para las fechas: ${selectedDates.map(date => format(new Date(date), 'dd/MM/yyyy', { locale: es })).join(' a ')}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, agendar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setScheduledDates(prevDates => [...prevDates, ...selectedRange.map(date => date.toISOString())]);
+
+          fetch(`${API_URL}/reservations/save`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dates: selectedRange.map(date => date.toISOString().split('T')[0]), productId: details.id })
+          })
+          .then(response => response.text())
+          .then(data => {
+            console.log(data);
+
+          console.log("Servicio agendado para las fechas:", selectedDates);
+          Swal.fire({
+            title: '¡Éxito!',
+            text: 'El servicio ha sido agendado.',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          });
+        })
+        .catch(error => {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo guardar la agenda',
+            icon: 'error',
+            confirmButtonText: 'Atrás'
+          });
+        });
+      }
+      });
+    }
+  } else {
+      Swal.fire({
+      title: 'Ups!',
+      text: 'Debes estar logueado para agendar el servicio',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Login',
+      cancelButtonText: 'Cancelar'
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTimeout(() => {
+          navigate('/login');
+        }, 500);
+      }
+    });
+  }
+  };
+
+  const weekDays = ["DO", "LU", "MA", "MI", "JU", "VI", "SA"];
+  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  const handleDateChange = (dates) => {
+    if (dates.length === 2) {
+      setSelectedDates(dates.map(date => new Date(date)));
+  } else {
+      setSelectedDates([new Date(dates[0])]);
+  }
   };
 
   return (
@@ -75,8 +189,31 @@ const Detail = () => {
           />
         </button>
       </div>
+      <div className="flex flex-col justify-center items-center text-primaryLight sm:text-sm md:text-lg lg:text-2xl my-4">
+        Fechas disponibles
+        <Calendar
+        range
+        rangeHover
+        dateSeparator= " a "
+        weekDays={weekDays}
+        months={months}
+        monthYearSeparator="|"
+        format="DD/MM/YYYY"
+        mapDays={({ date }) => {
+          let props = {};
+          if (scheduledDates.some((scheduledDate) => new Date(scheduledDate).toDateString() === new Date(date).toDateString())) {
+            props.style = {
+              backgroundColor: "red",
+              color: "white",
+            };
+          }
+          return props;
+        }}
+        onChange={handleDateChange}
+        />
+      </div>
       <div className="flex justify-center">
-        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white">
+        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white" onClick={handleSchedule}>
           Agendar servicio
         </button>
       </div>
