@@ -23,13 +23,13 @@ const Footer = () => {
 
         <div className="flex flex-col my-8 items-center gap-4 lg:gap-8">
           <Link to="/">
-            <p>Términos y condiciones</p>
+            <p className="hover:underline hover:duration-300">Términos y condiciones</p>
           </Link>
           <Link to="/">
-            <p>Aviso de privacidad</p>
+            <p className="hover:underline hover:duration-300">Aviso de privacidad</p>
           </Link>
           <Link to="/">
-            <p>Política de privacidad</p>
+            <p className="hover:underline">Política de privacidad</p>
           </Link>
         </div>
 
@@ -41,7 +41,7 @@ const Footer = () => {
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-black hover:opacity-50"
                 icon={faXTwitter}
               />
             </a>
@@ -52,7 +52,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className=" text-black"
+                className="text-black hover:opacity-50"
                 icon={faInstagram}
               />
             </a>
@@ -63,7 +63,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-black hover:opacity-50"
                 icon={faYoutube}
               />
             </a>
@@ -74,7 +74,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-black hover:opacity-50"
                 icon={faLinkedin}
               />
             </a>

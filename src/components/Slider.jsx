@@ -15,10 +15,10 @@ const Slider = ({ data }) => {
   };
 
   return (
-    <div className="  px-1 md:px-8 h-60 my-2 flex  items-center md:mx-4">
+    <div className="px-1 md:px-8 h-60 my-2 flex items-center md:mx-4">
       <FontAwesomeIcon
         icon={faCaretLeft}
-        className="text-secondary"
+        className="text-secondary hover:text-secondaryLight"
         size="4x"
         onClick={slideLeft}
       />
@@ -34,7 +34,7 @@ const Slider = ({ data }) => {
       </div>
       <FontAwesomeIcon
         icon={faCaretRight}
-        className="text-secondary"
+        className="text-secondary hover:text-secondaryLight"
         onClick={slideRight}
         size="4x"
       />
