@@ -55,7 +55,7 @@ const Search = () => {
   return (
     <section className="px-2 md:px-12 text-white space-y-10 py-10 bg-primary">
       <h1 className="text-center text-xl">Busca los servicios que necesites</h1>
-      <p>
+      <p className="text-center text-lg">
         Puedes seleccionar un rango de fechas y en base a eso buscar servicios
         disponibles según las palabras claves requeridas
       </p>

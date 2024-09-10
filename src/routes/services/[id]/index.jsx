@@ -2,13 +2,14 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/components/Search";
-import { properties } from "@/data/properties";
 import { Calendar } from "react-multi-date-picker"
 import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { format, eachDayOfInterval, isWithinInterval, isBefore } from 'date-fns';
 import { es } from 'date-fns/locale';
+import iconMap from "../../../data/iconMap";
+
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -18,11 +19,13 @@ async function loader({ params }) {
   const detailsResponse = await fetch(
     `${API_URL}/products/details/${params.id}`
   );
-  const serviceProperties = properties;
-
   const details = await detailsResponse.json();
 
   const scheduledDates = details.reservations.map(reservation => reservation.date)
+
+  const propertiesResponse = await fetch(`${API_URL}/characteristics`)
+  const serviceProperties = await propertiesResponse.json();
+  
 
   return {
     details,
@@ -33,12 +36,11 @@ async function loader({ params }) {
 
 const Detail = () => {
   const { details, serviceProperties, scheduledDates } = useLoaderData();
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [selectedDates, setSelectedDates] = useState([today]);
   const { isLoggedIn } = useAuth();
-  
-  
-
   const navigate = useNavigate();
+
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -193,13 +195,13 @@ const Detail = () => {
             <article className="flex-grow text-white text-xs lg:text-2xl">
               {details.description}
             </article>
-            <span className="flex  items-end  text-white text-base pr-2 lg:pr-28 lg:text-3xl">
+            <span className="flex items-end text-white text-base pr-2 lg:pr-28 lg:text-3xl">
               {details.price}
             </span>
           </div>
         </div>
 
-        <button className="absolute px-0.5 top-8 right-8 rounded-lg hover:bg-secondaryLight">
+        <button className="absolute px-0.5 top-8 right-8 rounded-full hover:bg-secondaryLight">
           <FontAwesomeIcon
             icon={faArrowLeft}
             className="text-white hover:text-primary sm:text-sm md:text-lg lg:text-2xl xl:text-4xl"
@@ -243,20 +245,24 @@ const Detail = () => {
         <div className="grid mt-12 grid-cols-2 items-center lg:grid-cols-3 gap-y-6">
           {serviceProperties.length > 0 ? (
             serviceProperties.map((property) => (
-              <div
-                key={property.id}
-                className="flex items-center  md:justify-center"
-              >
-                <FontAwesomeIcon
-                  icon={property.icon}
-                  className="text-xl md:text-2xl lg:text-3xl mx-4"
-                  style={{ color: "#000000" }}
-                />
-                <p className="lg md:text-xl lg:text-2xl">{property.pname}</p>
-              </div>
+              <>
+                <div
+                  key={property.id}
+                  className="flex flex-col items-center md:justify-center"
+                >
+                  <FontAwesomeIcon
+                    icon={iconMap[property.name]}
+                    className="text-xl md:text-2xl lg:text-4xl mx-4"
+                    style={{ color: "#000000" }}
+                  />
+
+                  <p className="text-lg md:text-xl lg:text-2xl">{property.name}</p>
+                  <p>{property.description}</p>
+                </div>
+              </>
             ))
           ) : (
-            <p>No hay características disponibles.</p>
+            <p className="text-xl text-center bg-red-300">No existen características para este servicio</p>
           )}
         </div>
       </div>
