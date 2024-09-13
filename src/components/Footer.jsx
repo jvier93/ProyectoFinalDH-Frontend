@@ -10,8 +10,8 @@ import { Logo } from "@/components/Logo";
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary  w-full  ">
-      <div className=" flex flex-col gap-2 lg:flex-row items-center justify-between px-12 py-7 text-white">
+    <footer className="w-full bg-secondary">
+      <div className="mx-auto flex max-w-[1366px] flex-col items-center justify-between gap-2 py-7 text-white lg:flex-row">
         <div className="flex flex-col items-center gap-2">
           <Logo />
           <p className="text-center">
@@ -19,9 +19,9 @@ const Footer = () => {
           </p>
         </div>
 
-        <span className="hidden lg:block  w-0.5 bg-white h-48"></span>
+        <span className="hidden h-48 w-0.5 bg-white lg:block"></span>
 
-        <div className="flex flex-col my-8 items-center gap-4 lg:gap-8">
+        <div className="my-8 flex flex-col items-center gap-4 lg:gap-8">
           <Link to="/">
             <p>Términos y condiciones</p>
           </Link>
@@ -33,11 +33,11 @@ const Footer = () => {
           </Link>
         </div>
 
-        <span className="hidden lg:block w-0.5 h-48 bg-white "></span>
+        <span className="hidden h-48 w-0.5 bg-white lg:block"></span>
 
         <div className="flex flex-col items-center gap-5 px-10">
           <p>Seguinos</p>
-          <div className=" space-x-4">
+          <div className="space-x-4">
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon
                 size="2x"
@@ -52,7 +52,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className=" text-black"
+                className="text-black"
                 icon={faInstagram}
               />
             </a>

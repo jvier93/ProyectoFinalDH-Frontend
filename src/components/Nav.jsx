@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { NavLinks } from "./NavLinks";
+import ToggleMenuIcon from "./ToggleMenuIcon";
 
 export const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,26 +26,16 @@ export const Nav = () => {
 
   return (
     <>
-      <nav className="w-1/3 md:w-3/6 lg:w-2/6 2xl:w-3/12 flex justify-end ">
-        <div className="hidden md:flex w-full gap-2  justify-end">
+      <nav className="pl-12 md:pl-4">
+        <div className="hidden w-full justify-end gap-2 md:flex">
           <NavLinks isSmallScreen={isSmallScreen} />
         </div>
         <div>
-          <button className="md:hidden" onClick={toggleNavbar}>
-            {isOpen ? (
-              <FontAwesomeIcon size="xl" className=" text-black" icon={faX} />
-            ) : (
-              <FontAwesomeIcon
-                size="xl"
-                className=" text-black"
-                icon={faBars}
-              />
-            )}
-          </button>
+          <ToggleMenuIcon open={isOpen} setOpen={toggleNavbar}></ToggleMenuIcon>
         </div>
       </nav>
       {isOpen && isSmallScreen && (
-        <div className="flex gap-2 pt-4 pb-2  flex-col items-center basis-full">
+        <div className="flex basis-full flex-col items-center gap-2 pb-2 pt-4">
           <NavLinks isSmallScreen={isSmallScreen} />
         </div>
       )}

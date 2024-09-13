@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
+import Button from "@/components/Button";
 
 //Card for service on dashboard panel
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service, isViewOnly }) => {
   const handleDeleteUser = () => {
     Swal.fire({
       scrollbarPadding: false, // Disables extra space reserved for the scrollbar
@@ -20,41 +21,46 @@ const ServiceCard = ({ service }) => {
   };
 
   return (
-    <article className="flex bg-white border rounded-md gap-2 p-4">
+    <article className="flex gap-2 rounded-md border bg-white p-4">
       <img
         src={service?.urlImage}
-        className="w-60 h-full object-cover rounded-md"
+        className="h-full w-60 rounded-md object-cover"
         alt="Service image"
       />
-      <div className="w-full space-y-4 ">
+      <div className="w-full space-y-4">
         <div>
-          <p className=" text-xl">{service?.name}</p>
-          <p className="text-gray-500 font-light">{"Categoria"}</p>
+          <p className="text-xl">{service?.name}</p>
+          <p className="font-light text-gray-500">{"Categoria"}</p>
         </div>
 
-        <div className="mr-2 text-sm  text-left rounded-md flex p-2 gap-8  bg-gray-50">
+        <div className="mr-2 flex gap-8 rounded-md bg-gray-50 p-2 text-left text-sm">
           <div className="space-y-2">
-            <p className=" text-gray-400">Caracteristicas</p>
+            <p className="text-gray-400">Caracteristicas</p>
             <p className="">{service?.characteristics.length}</p>
           </div>
           <div className="space-y-2">
-            <p className=" text-gray-400">Precio</p>
+            <p className="text-gray-400">Precio</p>
             <p className="">{service?.price}</p>
           </div>
         </div>
         <div className="flex gap-2">
-          <Link
-            to={`/dashboard/service/${service?.id}/edit`}
-            className="bg-primary  px-4 py-2 rounded-md text-white"
-          >
-            <FontAwesomeIcon size="xl" icon={faPenToSquare} />
-          </Link>
-          <button
-            onClick={handleDeleteUser}
-            className="bg-primary  px-4 py-2 rounded-md text-white"
-          >
-            <FontAwesomeIcon size="xl" icon={faTrash} />
-          </button>
+          {isViewOnly ? (
+            <Button variant="primary" to={`/dashboard/service/${service?.id}`}>
+              ver
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="primary"
+                to={`/dashboard/service/${service?.id}/edit`}
+              >
+                editar
+              </Button>
+              <Button onClick={handleDeleteUser} variant="primary">
+                eliminar
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </article>

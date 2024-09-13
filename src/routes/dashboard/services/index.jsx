@@ -45,15 +45,15 @@ export default function Services() {
   const { services } = useLoaderData();
 
   return (
-    <main className="mt-20 md:mt-28">
-      <h1 className="text-center text-xl text-primary  lg:text-4xl">
+    <main className="mx-auto mt-20 max-w-[1366px] md:mt-28">
+      <h1 className="text-center text-xl text-primary lg:text-4xl">
         Administrar servicios
       </h1>
-      <section className=" md:px-10 px-2 py-8 sm:px-6">
-        <div className="w-full text-right pb-4">
+      <section className="py-8">
+        <div className="w-full pb-4 text-right">
           <Link
             to={"/dashboard/services/new"}
-            className="rounded-full  bg-secondaryLight px-10 text-primaryLight"
+            className="rounded-full bg-secondaryLight px-10 text-primaryLight"
           >
             Nuevo servicio
           </Link>

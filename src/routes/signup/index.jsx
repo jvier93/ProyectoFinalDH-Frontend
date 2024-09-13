@@ -20,16 +20,16 @@ export default function Signup() {
       .min(8, "La contraseña debe tener al menos 8 caracteres")
       .matches(
         /[a-z]/,
-        "La contraseña debe contener al menos una letra minúscula"
+        "La contraseña debe contener al menos una letra minúscula",
       )
       .matches(
         /[A-Z]/,
-        "La contraseña debe contener al menos una letra mayúscula"
+        "La contraseña debe contener al menos una letra mayúscula",
       )
       .matches(/\d/, "La contraseña debe contener al menos un número")
       .matches(
         /[!@#$%^&*(),.?":{}|<>]/,
-        "La contraseña debe contener al menos un carácter especial"
+        "La contraseña debe contener al menos un carácter especial",
       )
       .required("Contraseña es requerida"),
     repeatPassword: yup
@@ -91,11 +91,11 @@ export default function Signup() {
 
   return (
     <main className="mt-20 md:mt-28">
-      <h1 className="text-center text-xl text-primary  lg:text-4xl">
+      <h1 className="text-center text-xl text-primary lg:text-4xl">
         Crear cuenta
       </h1>
       <form
-        className="flex py-10 w-4/5 lg:w-1/3 mx-auto flex-col gap-4"
+        className="mx-auto flex w-4/5 flex-col gap-4 py-10 md:items-center lg:w-1/3"
         onSubmit={formik.handleSubmit}
       >
         <FormInput
@@ -133,7 +133,7 @@ export default function Signup() {
           }
         />
         <button
-          className="px-10 mt-8 disabled:bg-tertiary disabled:text-primary hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
+          className="mx-auto mt-8 w-fit rounded-lg bg-primary px-10 py-2 text-white hover:bg-teal-600 disabled:bg-tertiary disabled:text-primary"
           type="submit"
           disabled={formik.isSubmitting}
         >

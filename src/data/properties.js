@@ -7,35 +7,42 @@ import {
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
-export const properties = [
+export const features = [
   {
     id: 1,
-    pname: "garantia",
+    name: "garantia",
+    description: "Garantia de 1 año en caso de que el producto no funcione",
     icon: faAward,
   },
   {
     id: 2,
-    pname: "eco-friendly",
+    name: "eco-friendly",
+
+    description: "Producto eco-amigable",
     icon: faLeaf,
   },
   {
     id: 3,
-    pname: "profesional calificado",
+    name: "profesional calificado",
+    description: "Profesionales calificados",
     icon: faStar,
   },
   {
     id: 4,
-    pname: "calidad",
+    name: "calidad",
+    description: "Calidad garantizada",
     icon: faShieldAlt,
   },
   {
     id: 5,
-    pname: "precios bajos",
+    name: "precios bajos",
+    description: "Precios asequibles",
     icon: faDollarSign,
   },
   {
     id: 6,
-    pname: "sin demoras",
+    name: "sin demoras",
+    description: "Sin demoras en el servicio",
     icon: faClock,
   },
 ];

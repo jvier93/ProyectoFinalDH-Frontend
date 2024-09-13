@@ -44,11 +44,11 @@ export default function Users() {
   const { users } = useLoaderData();
 
   return (
-    <main className="mt-20 md:mt-28">
-      <h1 className="text-center text-xl text-primary  lg:text-4xl">
+    <main className="mx-auto mt-20 max-w-[1366px] md:mt-28">
+      <h1 className="text-center text-xl text-primary lg:text-4xl">
         Administrar usuarios
       </h1>
-      <section className="  md:px-10 px-2 py-8 sm:px-6">
+      <section className="py-8">
         <DataGridContainer>
           {users?.map((user) => (
             <User key={user.id} user={user} />

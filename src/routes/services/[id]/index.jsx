@@ -1,111 +1,159 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import Search from "@/components/Search";
-import { properties } from "@/data/properties";
+import { features } from "@/data/properties";
+import { Calendar } from "react-multi-date-picker";
+import { useState } from "react";
+import Button from "@/components/Button";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const weekDays = ["DO", "LU", "MA", "MI", "JU", "VI", "SA"];
+const months = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Setiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 
 async function loader({ params }) {
   const detailsResponse = await fetch(
-    `${API_URL}/products/details/${params.id}`
+    `${API_URL}/products/details/${params.id}`,
   );
-  const serviceProperties = properties;
+  const serviceProperties = features;
 
   const details = await detailsResponse.json();
+
+  const scheduledDates = details.reservations.map(
+    (reservation) => reservation.date,
+  );
 
   return {
     details,
     serviceProperties,
+    scheduledDates,
   };
 }
 
 const Detail = () => {
-  const { details, serviceProperties } = useLoaderData();
-
-  const navigate = useNavigate();
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+  const { details, serviceProperties, scheduledDates } = useLoaderData();
+  const [seMuestra, setSeMuestra] = useState(false);
 
   return (
-    <div className="  mt-14 md:mt-20 ">
-      <Search />
-      <div className="flex justify-center items-center h-32">
-        <h2 className="text-xl lg:text-4xl text-primaryLight ">
-          Detalle del servicio
-        </h2>
-      </div>
-
-      <div className="flex h-16 bg-primary"></div>
-      {details ? (
-        <h3 className="text-xl text-center p-8 text-primaryLight lg:text-4xl">
-          {details.categoryName}
-        </h3>
-      ) : (
-        <p className="text-xl text-primaryLight lg:text-4xl">
-          Categoría no encontrada.
+    <main className="mt-8 bg-white pt-20 text-textPrimary md:mt-24">
+      <section
+        id="service_detail"
+        className="mx-auto max-w-[1366px] space-y-12 px-2 pb-12 lg:px-0"
+      >
+        <p className="lg:text-normal text-sm text-gray-500">
+          <Link className="hover:text-primary" to={"/"}>
+            Home
+          </Link>{" "}
+          /{" "}
+          <Link className="hover:text-primary" to={"/"}>
+            Servicios
+          </Link>{" "}
+          / {details?.name}
         </p>
-      )}
+        <div className="flex flex-col gap-12 md:flex-row">
+          <div className="space-y-8 lg:w-1/2">
+            <div className="space-y-2">
+              <h1 className="text-3xl lg:text-4xl">{details?.name}</h1>
+              <p className="text-gray-500">{details?.categoryName}</p>
+            </div>
+            <p>{details?.description}</p>
+            <p className="text-xl">
+              Precio <span className="font-bold">$UYU </span>
+              <span className="font-bold text-primary"> {details?.price}</span>
+            </p>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setSeMuestra(!seMuestra)}
+                variant="outline"
+                size="medium"
+              >
+                Consultar disponiblidad
+              </Button>
+              <Button
+                onClick={() => setSeMuestra(!seMuestra)}
+                variant="primary"
+                size="medium"
+              >
+                Reservar
+              </Button>
+            </div>
 
-      <div className="mx-auto max-w-[1227px] px-4 py-8 lg:px-10 relative flex flex-col bg-primary justify-center rounded-full ">
-        <h3 className="text-xl   text-white lg:text-4xl">{details.name}</h3>
-        <div className="flex pt-2 gap-4 lg:gap-8   ">
-          <img
-            className="rounded-3xl w-32 lg:w-96"
-            src={details.urlImage}
-            alt=""
-          />
-
-          <div className="flex items-end  gap-2 flex-col">
-            <article className="flex-grow text-white text-xs lg:text-2xl">
-              {details.description}
-            </article>
-            <span className="flex  items-end  text-white text-base pr-2 lg:pr-28 lg:text-3xl">
-              {details.price}
-            </span>
+            {seMuestra && (
+              <Calendar
+                range
+                rangeHover
+                dateSeparator=" a "
+                weekDays={weekDays}
+                months={months}
+                monthYearSeparator="|"
+                format="DD/MM/YYYY"
+                mapDays={({ date }) => {
+                  let props = {};
+                  if (
+                    scheduledDates?.some(
+                      (scheduledDate) =>
+                        new Date(scheduledDate).toDateString() ===
+                        new Date(date).toDateString(),
+                    )
+                  ) {
+                    props.style = {
+                      backgroundColor: "red",
+                      color: "white",
+                    };
+                  }
+                  return props;
+                }}
+                //onChange={handleDateChange}
+              />
+            )}
+          </div>
+          <div className="lg:w-1/2">
+            <img
+              className="h-96 w-full rounded-md object-cover"
+              src={details?.urlImage}
+              alt=""
+            />
           </div>
         </div>
-
-        <button className="absolute top-8 right-8">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            className="text-white sm:text-sm md:text-lg lg:text-2xl xl:text-4xl"
-            onClick={handleGoBack}
-          />
-        </button>
-      </div>
-      <div className="flex justify-center">
-        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white">
-          Agendar servicio
-        </button>
-      </div>
-      <div className="h-96 text-primaryLight">
-        <h3 className="flex ml-20  text-xl lg:text-4xl">
-          Características del Servicio
-        </h3>
-        <div className="grid mt-12 grid-cols-2 items-center lg:grid-cols-3 gap-y-6">
-          {serviceProperties.length > 0 ? (
-            serviceProperties.map((property) => (
+      </section>
+      <div className="bg-slate-100">
+        <section
+          id="service_features"
+          className="mx-auto max-w-[1366px] space-y-12 px-2 py-12 lg:px-0"
+        >
+          <h2 className="text-3xl lg:text-4xl">Caracteristicas</h2>
+          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
+            {serviceProperties?.map((property) => (
               <div
                 key={property.id}
-                className="flex items-center  md:justify-center"
+                className="flex h-32 w-80 gap-4 rounded-md bg-white p-4 shadow-md"
               >
                 <FontAwesomeIcon
-                  icon={property.icon}
-                  className="text-xl md:text-2xl lg:text-3xl mx-4"
-                  style={{ color: "#000000" }}
-                />
-                <p className="lg md:text-xl lg:text-2xl">{property.pname}</p>
+                  className="pt-2 text-primary"
+                  size="2xl"
+                  icon={property?.icon}
+                ></FontAwesomeIcon>
+                <div className="space-y-2">
+                  <p className="">{property?.name}</p>
+                  <p className="text-sm">{property?.description}</p>
+                </div>
               </div>
-            ))
-          ) : (
-            <p>No hay características disponibles.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        </section>
       </div>
-      <div className="hidden md:block h-24 bg-primary"></div>
-    </div>
+    </main>
   );
 };
 
