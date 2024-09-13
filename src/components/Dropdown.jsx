@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/hooks/useAuth";
 import DropdownItem from "@/components/DropdownItem";
-
 export const Dropdown = ({ isSmallScreen }) => {
   const { user, logout } = useAuth();
 
@@ -43,25 +42,20 @@ export const Dropdown = ({ isSmallScreen }) => {
         }
         closeDropdown();
       }}
-      className={` relative
-   transition duration-200 ease-in-out  `}
+      className={`relative rounded-md border-white text-white transition duration-200 ease-in-out md:border`}
     >
       <div
         onClick={() => setDropDownOpen(!dropDownOpen)}
-        className=" cursor-pointer select-none w-36 md:w-full rounded-full bg-white px-6 text-primary    hover:text-brand-red hover:underline"
+        className="w-full cursor-pointer select-none rounded-md px-3 md:w-full"
       >
-        <span className="">{user.username || "no name"}</span>
+        <span className="px-3">{user.username || "no name"}</span>
 
-        <FontAwesomeIcon
-          size="lg"
-          className=" text-primary ml-2"
-          icon={faChevronDown}
-        />
+        <FontAwesomeIcon size="lg" className="ml-2" icon={faChevronDown} />
       </div>
 
-      <div className="right-0 z-10 w-full md:absolute md:w-44">
+      <div className="right-0 top-5 z-10 w-full md:absolute md:w-44">
         <ul
-          className={` animate-fadeIn md:bg-secondaryLight md:text-primary py-2 pl-2 transition-all  md:mt-8  md:pl-0 md:shadow-lg  ${
+          className={`"bg-transparent animate-fadeIn py-2 pl-2 text-white transition-all md:mt-8 md:bg-white/95 md:pl-0 md:text-primary md:shadow-lg ${
             dropDownOpen ? "block" : "hidden"
           }`}
         >
@@ -73,7 +67,7 @@ export const Dropdown = ({ isSmallScreen }) => {
                   key={index}
                   closeDropdown={closeDropdown}
                 />
-              )
+              ),
           )}
         </ul>
       </div>

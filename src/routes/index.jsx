@@ -1,5 +1,6 @@
 import { Categories } from "../components/Categories";
 import { FeaturedServices } from "../components/FeaturedServices";
+import Hero from "@/components/Hero";
 import Search from "../components/Search";
 import { useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -51,8 +52,9 @@ export default function Home() {
   const { categories, services } = useLoaderData();
 
   return (
-    <main className=" mt-14  md:mt-20 ">
-      <Search />
+    <main className=" ">
+      <Hero />
+
       {categories?.length > 0 && <Categories categories={categories} />}
       {categories?.length > 0 && <FeaturedServices services={services} />}
     </main>

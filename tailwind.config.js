@@ -9,6 +9,7 @@ export default {
         secondary: "#99DBD6",
         secondaryLight: "#CCEDEB",
         tertiary: "#D9D9D9",
+        textPrimary: "#333333",
       },
       borderRadius: {
         full: "43px",
