@@ -26,6 +26,9 @@ async function loader({ params }) {
     (reservation) => reservation.date,
   );
 
+  console.log(scheduledDates);
+  
+
   return {
     details,
     serviceProperties,

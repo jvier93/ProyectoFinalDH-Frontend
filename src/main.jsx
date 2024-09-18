@@ -24,6 +24,7 @@ import UserDetail from "@/routes/dashboard/users/[id]";
 import NewService from "@/routes/dashboard/services/new";
 import ServiceDetail from "@/components/ServiceDetail";
 import NewReservation from "./routes/reservations/new";
+import Reservations from "./routes/reservations";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
         element: <NewReservation />,
         loader: NewReservation.loader,
       },
+      { path: "/reservations", element: <Reservations />, loader: Services.loader },
       {
         path: "/dashboard",
         children: [

@@ -3,6 +3,8 @@ import Button from "@/components/Button";
 
 //Card for service on dashboard panel
 const ServiceCard = ({ service, isViewOnly }) => {
+  console.log(service);
+  
   const handleDeleteUser = () => {
     Swal.fire({
       scrollbarPadding: false, // Disables extra space reserved for the scrollbar
