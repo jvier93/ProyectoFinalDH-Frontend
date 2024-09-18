@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 import ServiceCard from "@/components/ServiceCard";
@@ -24,6 +25,7 @@ async function loader({ params }) {
 const NewReservation = () => {
   const { details } = useLoaderData();
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const formatDate = (dateString) => {
@@ -62,13 +64,13 @@ const NewReservation = () => {
     onSubmit: async (values) => {
       try {
         const payload = {
-          user: "",
-          service: "",
-          date: values.name,
-          address: "",
+          email: user?.email,
+          productId: details?.id,
+          reservationDate: dateParam,
+          address: values.address,
         };
 
-        const response = await fetch(`${API_URL}/products/new`, {
+        const response = await fetch(`${API_URL}/reservations/new`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -91,17 +93,18 @@ const NewReservation = () => {
               `,
           confirmButtonColor: "#33B8AD",
         });
+
+        navigate(`/reservations/all`);
       } catch (error) {
-        console.error(`Error al crear el servicio ${error.message}`);
+        console.error(`Error al guardar la reserva`);
         Swal.fire({
           scrollbarPadding: false, // Disables extra space reserved for the scrollbar
           icon: "error",
           html: `
             <p class="text-sm text-gray-500 text-center font-Inter">
-              Hubo un problema al crear el servicio.
+              Hubo un problema al guardar la reserva.
               Si el problema persiste puedes <a class="underline" href=mailto:serviciostecnicospruebasservic@gmail.com">contactar a soporte</a>.
             </p>
-            
           `,
           footer: `
                    <details class="text-sm cursor-pointer text-gray-500">
@@ -168,9 +171,9 @@ const NewReservation = () => {
             />
             <div className="pt-4">
               <Button
+                onClick={formik.handleSubmit}
                 variant="primary"
                 size="medium"
-                to={`/dashboard/service/${details?.id}`}
               >
                 Confirmar reserva
               </Button>

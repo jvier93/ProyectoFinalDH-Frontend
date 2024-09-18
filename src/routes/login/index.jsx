@@ -1,3 +1,4 @@
+import { useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,7 +8,23 @@ import Swal from "sweetalert2";
 
 export default function Login() {
   const API_URL = import.meta.env.VITE_API_URL;
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  useLayoutEffect(() => {
+    Swal.fire({
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+      icon: "warning",
+      html: `
+        <p class="text-sm text-gray-500 text-center font-Inter">
+            Buen intento!, pero seras redirigido al inicio
+        </p> 
+      `,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   const validationSchema = yup.object({
     email: yup.string().email("Email inválido").required("Email es requerido"),
