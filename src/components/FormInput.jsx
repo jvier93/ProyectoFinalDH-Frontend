@@ -4,6 +4,9 @@ import {
   faEnvelope,
   faLock,
   faDollarSign,
+  faHouse,
+  faCalendarDay,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 const FormInput = ({
@@ -14,6 +17,7 @@ const FormInput = ({
   showError,
   placeholder,
   errorMessage,
+  disabled,
   options, //for select, an array of {value, label}
 }) => {
   const icons = {
@@ -23,6 +27,9 @@ const FormInput = ({
     name: faUser,
     username: faUser,
     price: faDollarSign,
+    address: faHouse,
+    date: faCalendarDay,
+    time: faClock,
   };
 
   if (type === "select") {
@@ -54,14 +61,15 @@ const FormInput = ({
         {label}
       </label>
       <div
-        className={`${
+        className={`${disabled ? "cursor-not-allowed" : ""} ${
           errorMessage && showError ? "border border-red-500" : ""
         } flex w-full items-center justify-between gap-2.5 rounded-md bg-white p-3 shadow-md md:w-96`}
       >
         <FontAwesomeIcon className="text-primary" icon={icons[id]} />
         <input
-          className="flex-1 bg-transparent text-sm caret-primary outline-none"
+          className={`${disabled ? "cursor-not-allowed" : ""} flex-1 bg-transparent text-sm caret-primary outline-none`}
           placeholder={placeholder}
+          disabled={disabled}
           id={id}
           type={type}
           {...fieldProps}

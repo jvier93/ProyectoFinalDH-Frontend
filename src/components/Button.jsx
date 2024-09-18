@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Button = ({ to, onClick, variant, size, children }) => {
+const Button = ({ to, onClick, variant, size, children, ...props }) => {
   const variants = {
     primary: "border-transparent text-white bg-primary hover:bg-teal-600",
     white:
@@ -19,6 +19,7 @@ const Button = ({ to, onClick, variant, size, children }) => {
       <Link
         to={to}
         className={`flex w-fit cursor-pointer items-center justify-center rounded-md border px-6 transition-colors ${variants[variant]} ${sizes[size]}`}
+        {...props}
       >
         {children}
       </Link>
@@ -30,6 +31,7 @@ const Button = ({ to, onClick, variant, size, children }) => {
       <button
         onClick={onClick}
         className={`flex w-fit cursor-pointer items-center justify-center rounded-md border px-6 transition-colors ${variants[variant]} ${sizes[size]}`}
+        {...props}
       >
         {children}
       </button>

@@ -1,24 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useScreenWidth } from "@/hooks/useScreenWidth";
 
 import { NavLinks } from "./NavLinks";
 import ToggleMenuIcon from "./ToggleMenuIcon";
 
 export const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [width, setWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
-
-    return function cleanup() {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const isSmallScreen = width <= 768;
+  const { isSmallScreen } = useScreenWidth();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);

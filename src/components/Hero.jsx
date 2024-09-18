@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import Button from "@/components/Button";
+import { useAuth } from "@/hooks/useAuth";
 
 Link;
 const Hero = () => {
+  const { user } = useAuth();
+
   return (
     <section className="relative h-screen w-full bg-[url('/images/hero.jpg')] bg-cover bg-no-repeat text-white">
       <div className="inset-0 h-full bg-gradient-to-r from-black/80 via-black/40 to-transparent">
@@ -13,14 +16,15 @@ const Hero = () => {
             </h1>
 
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium possimus pariatur ad, atque animi iste nam vero, sed,
-              nesciunt commodi quam illum fuga recusandae tenetur. Tenetur
-              numquam rerum totam laborum.
+              Tu hogar, en las mejores manos. Brindamos servicios de
+              mantenimiento confiables y rápidos, para que disfrutes de un
+              espacio siempre cuidado.
             </p>
-            <Button variant="white" size="small" to={"/"}>
-              Probalo Gratis
-            </Button>
+            {!user && (
+              <Button variant="white" to={"/signup"} size="small">
+                Probalo Gratis
+              </Button>
+            )}
           </div>
         </div>
       </div>
