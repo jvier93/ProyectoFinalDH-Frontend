@@ -22,7 +22,8 @@ import Services from "@/routes/dashboard/services";
 import Detail from "@/routes/services/[id]";
 import UserDetail from "@/routes/dashboard/users/[id]";
 import NewService from "@/routes/dashboard/services/new";
-import ServiceDetail from "./components/ServiceDetail";
+import ServiceDetail from "@/components/ServiceDetail";
+import NewReservation from "./routes/reservations/new";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,11 @@ const router = createBrowserRouter([
         element: <Verify />,
       },
       { path: "/services/:id", element: <Detail />, loader: Detail.loader },
+      {
+        path: "reservations/:id/new",
+        element: <NewReservation />,
+        loader: NewReservation.loader,
+      },
       {
         path: "/dashboard",
         children: [
@@ -123,7 +129,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <RouterProvider router={router} />,
+  /* </React.StrictMode>, */
 );

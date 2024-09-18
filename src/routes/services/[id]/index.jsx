@@ -1,31 +1,30 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import Search from "@/components/Search";
-import { Calendar } from "react-multi-date-picker"
+import { features } from "@/data/properties";
 import { useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
+import Button from "@/components/Button";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { format, eachDayOfInterval, isWithinInterval, isBefore } from 'date-fns';
-import { es } from 'date-fns/locale';
-import iconMap from "../../../data/iconMap";
-
-
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+//Calendar locale import
+import { es } from "date-fns/locale";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const today = new Date();
 
 async function loader({ params }) {
   const detailsResponse = await fetch(
-    `${API_URL}/products/details/${params.id}`
+    `${API_URL}/products/details/${params.id}`,
   );
+  const serviceProperties = features;
+
   const details = await detailsResponse.json();
 
-  const scheduledDates = details.reservations.map(reservation => reservation.date)
-
-  const propertiesResponse = await fetch(`${API_URL}/characteristics`)
-  const serviceProperties = await propertiesResponse.json();
-  
+  const scheduledDates = details.reservations.map(
+    (reservation) => reservation.date,
+  );
 
   return {
     details,
@@ -36,238 +35,282 @@ async function loader({ params }) {
 
 const Detail = () => {
   const { details, serviceProperties, scheduledDates } = useLoaderData();
-  const [selectedDates, setSelectedDates] = useState([today]);
-  const { isLoggedIn } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
+  //Include es language to calendar
+  registerLocale("es", es);
 
-  const handleGoBack = () => {
-    navigate(-1);
+  const hoursRange = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+  const [showAvailabilityCalendar, setShowAvailabilityCalendar] =
+    useState(false);
+
+  //Functions to calendar
+
+  const getFullyBookedDays = (reservations) => {
+    const groupedByDay = {};
+    reservations.forEach((reservation) => {
+      const bookingDate = new Date(reservation);
+
+      const dateKey = bookingDate.toDateString();
+
+      if (!groupedByDay[dateKey]) {
+        groupedByDay[dateKey] = [];
+      }
+      groupedByDay[dateKey].push(bookingDate.getHours());
+    });
+    return Object.keys(groupedByDay)
+      .filter((dateKey) => {
+        const hoursBooked = groupedByDay[dateKey];
+        return hoursRange.every((hour) => hoursBooked.includes(hour));
+      })
+      .map((dateKey) => new Date(dateKey));
   };
+  const getReservedTimesForDay = (date, reservations) => {
+    return reservations.filter((reservation) => {
+      const bookedDate = new Date(reservation);
+      return bookedDate.toDateString() === date.toDateString();
+    });
+  };
+  const isAvailableHour = (date) => {
+    const excludeTimes = getReservedTimesForDay(date, scheduledDates);
+    const excludeTimesHours = excludeTimes.map((dateString) => {
+      const date = new Date(dateString); // Convertir cadena a Date
+      return date.getHours(); // Obtener la hora
+    });
 
-  const handleSchedule = () => {
+    const dateHours = date.getHours();
 
-    if (isLoggedIn) {
+    //if hour from our selected date is NOT present on exludeTimes it is an available hour
+    //if hour from our selected date is present on hoursRange it is an available hour
+    return (
+      !excludeTimesHours.includes(dateHours) && hoursRange.includes(dateHours)
+    );
+  };
+  const firstAvailableHour = (date) => {
+    const excludeTimes = getReservedTimesForDay(date, scheduledDates);
+    const excludeTimesHours = excludeTimes.map((dateString) => {
+      const date = new Date(dateString); // Convertir cadena a Date
+      return date.getHours(); // Obtener la hora
+    });
 
-      const [startDate, endDate] = selectedDates;
-      const selectedRange = endDate
-          ? eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) })
-          : [new Date(startDate)];
+    const firstAvailableHour = hoursRange.find((hour) => {
+      return !excludeTimesHours.includes(hour);
+    });
 
+    return firstAvailableHour;
+  };
+  const handleDateChange = (date) => {
+    let selectedDate = date;
+    if (!isAvailableHour(date)) {
+      selectedDate.setHours(firstAvailableHour(date), 0, 0, 0);
+    }
 
-    if (selectedRange.some(date => isBefore(date, today) || date.toDateString() === today.toDateString())) {
+    setSelectedDate(selectedDate);
+  };
+  const handleCheckAvailability = () => {
+    if (!user) {
       Swal.fire({
-        title: 'Error',
-        text: 'No se pueden seleccionar hoy, ni fechas anteriores a hoy',
-        icon: 'error',
-        confirmButtonText: 'Atrás',
+        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+        icon: "warning",
+        html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+              Debe estar logueado para poder consultar la disponibilidad
+          </p> 
+        `,
+        showConfirmButton: false,
+        timer: 1500,
       });
+
       return;
     }
 
-
-    const hasConflict = selectedRange.some((date) => {
-      return scheduledDates.some((scheduled) => {
-        if (typeof scheduled === 'string') {
-          const scheduledDate = new Date(scheduled);
-          return scheduledDate.toDateString() === date.toDateString();
-        }
-
-        const scheduledStart = new Date(scheduled.start);
-        const scheduledEnd = new Date(scheduled.end);
-        
-        return isWithinInterval(date, { start: scheduledStart, end: scheduledEnd });
-    });
-    });
-      
-    if (hasConflict) {
+    setShowAvailabilityCalendar(!showAvailabilityCalendar);
+  };
+  const handleBooking = () => {
+    if (!user) {
       Swal.fire({
-        title: 'Error',
-        text: 'Algunas de las fechas seleccionadas ya están agendadas',
-        icon: 'error',
-        confirmButtonText: 'Atrás',
+        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+        icon: "warning",
+        html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+              Debe estar logueado para poder reservar
+          </p>
+        `,
+        showConfirmButton: false,
+        timer: 1500,
       });
-    } else {
-        Swal.fire({
-          title: 'Confirmar agenda',
-          text: `¿Deseas agendar el servicio para las fechas: ${selectedDates.map(date => format(new Date(date), 'dd/MM/yyyy', { locale: es })).join(' a ')}?`,
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, agendar',
-          cancelButtonText: 'Cancelar'
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-                const response = await fetch(`${API_URL}/products/details`, {
-                method: 'POST',
-                headers: {
-                 'Content-Type': 'application/json',
-                },
-               body: JSON.stringify({ dates: selectedRange.map(date => date.toISOString().split('T')[0]),  productId: details.id })
-              });
 
-              if (response.ok) {
-                Swal.fire({
-                  title: '¡Éxito!',
-                  text: 'El servicio ha sido agendado.',
-                  icon: 'success',
-                  confirmButtonText: 'Ok'
-                });
-              } else {
-                  Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudo guardar la agenda. Inténtalo de nuevo',
-                    icon: 'error',
-                    confirmButtonText: 'Atrás'
-                  });
-                }
-            } catch (error) {
-                Swal.fire({
-                  title:'Error',
-                  text: 'No se pudo conectar con el servidor. Inténtalo de nuevo',
-                  icon: 'error',
-                  confirmButtonText: 'Atrás'
-              });
-            }
-          }
-        });
-      } 
-    } else {
-        Swal.fire({
-          title: 'Ups!',
-          text: 'Debes estar logueado para agendar el servicio',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Login',
-          cancelButtonText: 'Cancelar'
-      
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setTimeout(() => {
-          navigate('/login');
-        }, 500);
-       }
-      });
+      return;
     }
+
+    if (!selectedDate) {
+      Swal.fire({
+        scrollbarPadding: false, // Desactiva el espacio reservado para la barra de desplazamiento
+        icon: "warning",
+        html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+            Debe seleccionar una fecha.
+          </p>
+        `,
+        footer: `
+          <p class="text-sm text-gray-500">
+            Presione "Consultar disponibilidad" para verificar fechas disponibles.
+          </p>
+          
+        `,
+        confirmButtonColor: "#33B8AD",
+        showConfirmButton: false,
+        timer: 5000,
+      });
+
+      return;
+    }
+
+    navigate(
+      `/reservations/${details?.id}/new?date=${encodeURIComponent(selectedDate.toISOString())}`,
+    );
   };
 
-  const weekDays = ["DO", "LU", "MA", "MI", "JU", "VI", "SA"];
-  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+  //Calendar properties
+  const minTime = new Date();
+  minTime.setHours(9, 0, 0);
+  const maxTime = new Date();
+  maxTime.setHours(20, 0, 0);
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const handleDateChange = (dates) => {
-    if (dates.length === 2) {
-      setSelectedDates(dates.map(date => new Date(date)));
-  } else {
-      setSelectedDates([new Date(dates[0])]);
-  }
-  };
+  const [selectedDate, setSelectedDate] = useState(null);
+  const fullyBookedDays = getFullyBookedDays(scheduledDates);
+
+  const excludeTimes = getReservedTimesForDay(
+    selectedDate || new Date(),
+    scheduledDates,
+  );
 
   return (
-    <div className="  mt-14 md:mt-20 ">
-      <Search />
-      <div className="flex justify-center items-center h-32">
-        <h2 className="text-xl lg:text-4xl text-primaryLight ">
-          Detalle del servicio
-        </h2>
-      </div>
-
-      <div className="flex h-16 bg-primary"></div>
-      {details ? (
-        <h3 className="text-xl text-center p-8 text-primaryLight lg:text-4xl">
-          {details.categoryName}
-        </h3>
-      ) : (
-        <p className="text-xl text-primaryLight lg:text-4xl">
-          Categoría no encontrada.
+    <main className="mt-8 bg-white pt-20 text-textPrimary md:mt-24">
+      <section
+        id="service_detail"
+        className="mx-auto max-w-[1366px] space-y-12 px-2 pb-12 lg:px-0"
+      >
+        <p className="lg:text-normal text-sm text-gray-500">
+          <Link className="hover:text-primary" to={"/"}>
+            Home
+          </Link>{" "}
+          /{" "}
+          <Link className="hover:text-primary" to={"/"}>
+            Servicios
+          </Link>{" "}
+          / {details?.name}
         </p>
-      )}
+        <div className="flex flex-col gap-12 md:flex-row">
+          <div className="space-y-8 lg:w-1/2">
+            <div className="space-y-2">
+              <h1 className="text-3xl lg:text-4xl">{details?.name}</h1>
+              <p className="text-gray-500">{details?.categoryName}</p>
+            </div>
+            <p>{details?.description}</p>
+            <p className="text-xl">
+              Precio <span className="font-bold">$UYU </span>
+              <span className="font-bold text-primary"> {details?.price}</span>
+            </p>
+            <div className="flex gap-2 pb-2">
+              <Button
+                onClick={handleCheckAvailability}
+                variant="outline"
+                size="medium"
+                id="checkAvailability"
+              >
+                Consultar disponiblidad
+              </Button>
 
-      <div className="mx-auto max-w-[1227px] px-4 py-8 lg:px-10 relative flex flex-col bg-primary justify-center rounded-full ">
-        <h3 className="text-xl   text-white lg:text-4xl">{details.name}</h3>
-        <div className="flex pt-2 gap-4 lg:gap-8   ">
-          <img
-            className="rounded-3xl w-32 lg:w-96"
-            src={details.urlImage}
-            alt=""
-          />
+              <Button
+                onClick={handleBooking}
+                variant="primary"
+                size="medium"
+                id="booking"
+              >
+                Reservar
+              </Button>
+            </div>
 
-          <div className="flex items-end  gap-2 flex-col">
-            <article className="flex-grow text-white text-xs lg:text-2xl">
-              {details.description}
-            </article>
-            <span className="flex items-end text-white text-base pr-2 lg:pr-28 lg:text-3xl">
-              {details.price}
-            </span>
+            {showAvailabilityCalendar && (
+              <DatePicker
+                inline
+                selected={selectedDate}
+                locale="es"
+                showTimeSelect
+                onClickOutside={(event) => {
+                  const targetId = event.target.id;
+
+                  if (
+                    targetId === "checkAvailability" ||
+                    targetId === "booking"
+                  ) {
+                    return;
+                  }
+
+                  setShowAvailabilityCalendar(false);
+                }}
+                timeFormat="HH:mm"
+                timeIntervals={60}
+                timeCaption="Hora"
+                // This function checks if a given date is not fully booked by comparing it to an array of fully booked dates (fullyBookedDays).
+                // It returns true if the date is available (not in fullyBookedDays) and false if the date is fully booked.
+                //False results are tagged disabled on calendar
+                filterDate={(date) => {
+                  return !fullyBookedDays.some(
+                    (bookedDate) =>
+                      bookedDate.toDateString() === date.toDateString(),
+                  );
+                }}
+                excludeTimes={excludeTimes}
+                highlightDates={fullyBookedDays}
+                minDate={tomorrow}
+                minTime={minTime}
+                maxTime={maxTime}
+                onChange={handleDateChange}
+              ></DatePicker>
+            )}
+          </div>
+          <div className="lg:w-1/2">
+            <img
+              className="h-96 w-full rounded-md object-cover"
+              src={details?.urlImage}
+              alt=""
+            />
           </div>
         </div>
-
-        <button className="absolute px-0.5 top-8 right-8 rounded-full hover:bg-secondaryLight">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            className="text-white hover:text-primary sm:text-sm md:text-lg lg:text-2xl xl:text-4xl"
-            onClick={handleGoBack}
-          />
-        </button>
-      </div>
-      <div className="flex flex-col space-y-4 items-center text-primaryLight sm:text-sm md:text-lg lg:text-3xl my-4">
-        <p>Fechas disponibles</p>
-        <Calendar
-        numberOfMonths={2}
-        range
-        rangeHover
-        dateSeparator= " a "
-        weekDays={weekDays}
-        months={months}
-        monthYearSeparator="|"
-        format="DD/MM/YYYY"
-        mapDays={({ date }) => {
-          let props = {};
-          if (scheduledDates.some((scheduledDate) => new Date(scheduledDate).toDateString() === new Date(date).toDateString())) {
-            props.style = {
-              backgroundColor: "red",
-              color: "white",
-            };
-          }
-          return props;
-        }}
-        onChange={handleDateChange}
-        />
-      </div>
-      <div className="flex justify-center">
-        <button className="bg-primary my-6 px-10 py-3 rounded-2xl text-white hover:bg-secondary" onClick={handleSchedule}>
-          Agendar servicio
-        </button>
-      </div>
-      <div className="h-96 text-primaryLight">
-        <h3 className="flex ml-20  text-xl lg:text-4xl">
-          Características del Servicio
-        </h3>
-        <div className="grid mt-12 grid-cols-2 items-center lg:grid-cols-3 gap-y-6">
-          {serviceProperties.length > 0 ? (
-            serviceProperties.map((property) => (
-              <>
-                <div
-                  key={property.id}
-                  className="flex flex-col items-center md:justify-center"
-                >
-                  <FontAwesomeIcon
-                    icon={iconMap[property.name]}
-                    className="text-xl md:text-2xl lg:text-4xl mx-4"
-                    style={{ color: "#000000" }}
-                  />
-
-                  <p className="text-lg md:text-xl lg:text-2xl">{property.name}</p>
-                  <p>{property.description}</p>
+      </section>
+      <div className="bg-slate-100">
+        <section
+          id="service_features"
+          className="mx-auto max-w-[1366px] space-y-12 px-2 py-12 lg:px-0"
+        >
+          <h2 className="text-3xl lg:text-4xl">Caracteristicas</h2>
+          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
+            {serviceProperties?.map((property) => (
+              <div
+                key={property.id}
+                className="flex h-32 w-80 gap-4 rounded-md bg-white p-4 shadow-md"
+              >
+                <FontAwesomeIcon
+                  className="pt-2 text-primary"
+                  size="2xl"
+                  icon={property?.icon}
+                ></FontAwesomeIcon>
+                <div className="space-y-2">
+                  <p className="">{property?.name}</p>
+                  <p className="text-sm">{property?.description}</p>
                 </div>
-              </>
-            ))
-          ) : (
-            <p className="text-xl text-center bg-red-300">No existen características para este servicio</p>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
-      <div className="hidden md:block h-24 bg-primary"></div>
-    </div>
+    </main>
   );
 };
 

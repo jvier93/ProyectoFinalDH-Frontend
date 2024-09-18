@@ -31,13 +31,13 @@ export const NavLinks = ({ isSmallScreen }) => {
         (link) =>
           link.show && (
             <Link
-              className="rounded-full bg-white px-6 text-primary"
+              className="rounded-md border px-6 text-white transition-colors hover:bg-white hover:text-primary"
               key={link.id}
               to={link.path}
             >
               {link.name}
             </Link>
-          )
+          ),
       )}
       {user && <Dropdown isSmallScreen={isSmallScreen} />}
     </>

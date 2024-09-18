@@ -4,6 +4,9 @@ import {
   faEnvelope,
   faLock,
   faDollarSign,
+  faHouse,
+  faCalendarDay,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 const FormInput = ({
@@ -14,24 +17,29 @@ const FormInput = ({
   showError,
   placeholder,
   errorMessage,
+  disabled,
   options, //for select, an array of {value, label}
 }) => {
   const icons = {
     email: faEnvelope,
     password: faLock,
+    repeatPassword: faLock,
     name: faUser,
     username: faUser,
     price: faDollarSign,
+    address: faHouse,
+    date: faCalendarDay,
+    time: faClock,
   };
 
   if (type === "select") {
     return (
       <div className="flex flex-col gap-1">
-        <label className="text-primaryLight " htmlFor={id}>
+        <label className="text-primaryLight" htmlFor={id}>
           {label}
         </label>
         <select
-          className="bg-tertiary text-sm py-2  text-primaryLight"
+          className="bg-tertiary py-2 text-sm text-primaryLight"
           id={id}
           {...fieldProps}
         >
@@ -42,28 +50,26 @@ const FormInput = ({
           ))}
         </select>
         {showError && (
-          <span className="text-red-500 text-sm ">{errorMessage}</span>
+          <span className="text-sm text-red-500">{errorMessage}</span>
         )}
       </div>
     );
   }
   return (
-    <div className="flex text-sm flex-col gap-1">
+    <div className="flex flex-col gap-1 text-sm">
       <label className="text-gray-500" htmlFor={id}>
         {label}
       </label>
       <div
-        className={`${
+        className={`${disabled ? "cursor-not-allowed" : ""} ${
           errorMessage && showError ? "border border-red-500" : ""
-        } bg-white  shadow-md  rounded-md flex justify-between items-center p-3 w-96 gap-2.5`}
+        } flex w-full items-center justify-between gap-2.5 rounded-md bg-white p-3 shadow-md md:w-96`}
       >
-        <FontAwesomeIcon
-          className="text-primary"
-          icon={icons[fieldProps.name]}
-        />
+        <FontAwesomeIcon className="text-primary" icon={icons[id]} />
         <input
-          className="bg-transparent text-sm flex-1  caret-primary outline-none "
+          className={`${disabled ? "cursor-not-allowed" : ""} flex-1 bg-transparent text-sm caret-primary outline-none`}
           placeholder={placeholder}
+          disabled={disabled}
           id={id}
           type={type}
           {...fieldProps}
@@ -71,7 +77,7 @@ const FormInput = ({
       </div>
 
       {showError && (
-        <span className="text-red-500 text-sm ">{errorMessage}</span>
+        <span className="text-sm text-red-500">{errorMessage}</span>
       )}
     </div>
   );

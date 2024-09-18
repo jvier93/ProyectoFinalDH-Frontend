@@ -1,36 +1,41 @@
 import { faAward, faLeaf, faStar, faShieldAlt, faDollarSign, faClock } from '@fortawesome/free-solid-svg-icons';
 
-const properties = [
-    {
-        pname: "Garantia",
-        pdescription: "60 días a partir de la finalización del servicio",
-        icon: faAward,
-      },
-      {
-        pname: "Profesional Calificado",
-        pdescription: "Contamos con los mejores profesionales del país",
-        icon: faStar,
-      },
-      {
-        pname: "Calidad",
-        pdescription: "Materiales de alta resistencia y duraderos para un servicio de calidad",
-        icon: faShieldAlt,
-      },
-      {
-        pname: "Sin Demoras",
-        pdescription: "Brindamos el servicio más rápido de la región",
-        icon: faClock,
-      },
-      {
-        pname: "Eco-Friendly",
-        pdescription: "Usamos productos que cuidan el medio ambiente",
-        icon: faLeaf,
-      },
-      {
-        pname: "Precios Bajos",
-        pdescription: "Los precios más accesibles!!",
-        icon: faDollarSign,
-      },
-  ];
+export const features = [
+  {
+    id: 1,
+    name: "garantia",
+    description: "Garantia de 1 año en caso de que el producto no funcione",
+    icon: faAward,
+  },
+  {
+    id: 2,
+    name: "eco-friendly",
 
-  export default properties;
+    description: "Producto eco-amigable",
+    icon: faLeaf,
+  },
+  {
+    id: 3,
+    name: "profesional calificado",
+    description: "Profesionales calificados",
+    icon: faStar,
+  },
+  {
+    id: 4,
+    name: "calidad",
+    description: "Calidad garantizada",
+    icon: faShieldAlt,
+  },
+  {
+    id: 5,
+    name: "precios bajos",
+    description: "Precios asequibles",
+    icon: faDollarSign,
+  },
+  {
+    id: 6,
+    name: "sin demoras",
+    description: "Sin demoras en el servicio",
+    icon: faClock,
+  },
+];

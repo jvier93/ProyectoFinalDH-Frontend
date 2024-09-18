@@ -77,7 +77,7 @@ export default function NewService() {
           .string()
           .oneOf(
             categories?.map((category) => category.name),
-            "Categoría inválida"
+            "Categoría inválida",
           )
           .required("El nombre de la categoría es requerido"),
       })
@@ -94,7 +94,7 @@ export default function NewService() {
             value &&
             ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
           );
-        }
+        },
       ),
   });
 
@@ -120,7 +120,7 @@ export default function NewService() {
           {
             method: "POST",
             body: formData,
-          }
+          },
         );
 
         const data = await response.json();
@@ -185,16 +185,14 @@ export default function NewService() {
     },
   });
 
-  console.log(formik.values);
-
   return (
-    <main className="mt-20 md:mt-28 ">
-      <h1 className="text-center text-xl text-primary  lg:text-4xl">
+    <main className="mt-20 md:mt-28">
+      <h1 className="text-center text-xl text-primary lg:text-4xl">
         Nuevo servicio
       </h1>
       <form
         onSubmit={formik.handleSubmit}
-        className="flex py-10 w-4/5 lg:w-1/3 mx-auto flex-col items-center gap-4"
+        className="mx-auto flex w-4/5 flex-col items-center gap-4 py-10 lg:w-1/3"
       >
         <FormInput
           type="text"
@@ -253,7 +251,7 @@ export default function NewService() {
         />
 
         <button
-          className="px-10 mt-8 disabled:bg-tertiary disabled:text-primary hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
+          className="mx-auto mt-8 w-fit rounded-lg bg-primary px-10 py-2 text-white hover:bg-teal-600 disabled:bg-tertiary disabled:text-primary"
           type="submit"
           disabled={formik.isSubmitting}
         >
