@@ -44,7 +44,7 @@ const ServiceCard = ({ service, isViewOnly }) => {
         </div>
         <div className="flex gap-2">
           {isViewOnly ? (
-            <Button variant="primary" to={`/dashboard/services/${service?.id}`}>
+            <Button variant="primary" to={`/services/${service?.id}`}>
               ver
             </Button>
           ) : (

@@ -62,7 +62,11 @@ const router = createBrowserRouter([
       { path: "/services/:id", element: <Detail />, loader: Detail.loader },
       {
         path: "reservations/:id/new",
-        element: <NewReservation />,
+        element: (
+          <ProtectedRoute>
+            <NewReservation />
+          </ProtectedRoute>
+        ),
         loader: NewReservation.loader,
       },
       { path: "/reservations", element: <Reservations />, loader: Services.loader },
@@ -131,7 +135,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
-  <RouterProvider router={router} />,
-  /* </React.StrictMode>, */
+  <React.StrictMode>
+    <RouterProvider router={router} />,
+  </React.StrictMode>,
 );
