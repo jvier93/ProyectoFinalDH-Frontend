@@ -10,7 +10,7 @@ import { Logo } from "@/components/Logo";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-secondary">
+    <footer className="w-full bg-secondary -mb-6">
       <div className="mx-auto flex max-w-[1366px] flex-col items-center justify-between gap-2 py-7 text-white lg:flex-row">
         <div className="flex flex-col items-center gap-2">
           <Logo logoUrl={"/images/logo-white.png"} />

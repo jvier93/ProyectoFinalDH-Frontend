@@ -54,7 +54,8 @@ const Reservations = () => {
   }, [user]);
 
   return (
-    <div className='mx-auto mt-20 max-w-[1366px] md:mt-28'>
+    <div className='mx-auto mt-20 max-w-[1366px] md:mt-28 mb-5'>
+        <h1 className='text-center text-xl lg:text-4xl text-textPrimary py-10'>Mis Reservas</h1>
         <DataGridContainer>
           {reservations?.map((reservation) => (
             <ReservationServiceCard key={reservation.id} service={reservation} />
