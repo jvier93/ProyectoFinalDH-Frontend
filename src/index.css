@@ -11,7 +11,7 @@ html {
   overflow-y: scroll;
 }
 
-/* React Multi Date Picker Styles */
+/* REACT MULTI DATE PICKER STYLES */
 
 /* Since there is not a way to make custom styles for this popup component, 
    we need to re-rwite some of them */
@@ -51,6 +51,39 @@ html {
 /* For today span */
 .rmdp-today span {
   background-color: #33b8ad !important;
+}
+
+/* DATE PICKER CALENDAR STYLES */
+
+/* Calendar container */
+
+.react-datepicker__day-name {
+  color: #33b8ad !important;
+}
+
+.react-datepicker__header {
+  background-color: #fff !important;
+}
+
+/* Change day selected styles  */
+
+.react-datepicker__day--selected {
+  background-color: #33b8ad !important; /* Verde */
+  color: white; /* Texto en blanco para que sea legible */
+}
+
+/* Change hour selected styles  */
+
+.react-datepicker__time-list-item--selected {
+  background-color: #33b8ad !important; /* Verde */
+  color: white; /* Texto en blanco para que sea legible */
+}
+
+/* Change highlighted styles*/
+
+.react-datepicker__day--highlighted {
+  background-color: red !important;
+  color: white !important;
 }
 
 @layer components {

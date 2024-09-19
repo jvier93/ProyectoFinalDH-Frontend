@@ -13,7 +13,7 @@ const Footer = () => {
     <footer className="w-full bg-secondary">
       <div className="mx-auto flex max-w-[1366px] flex-col items-center justify-between gap-2 py-7 text-white lg:flex-row">
         <div className="flex flex-col items-center gap-2">
-          <Logo />
+          <Logo logoUrl={"/images/logo-white.png"} />
           <p className="text-center">
             {`© ${new Date().getFullYear()} Homehelper. Todos los derechos reservados`}{" "}
           </p>
@@ -41,7 +41,7 @@ const Footer = () => {
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-white transition-colors hover:text-textPrimary"
                 icon={faXTwitter}
               />
             </a>
@@ -52,7 +52,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-white hover:text-textPrimary"
                 icon={faInstagram}
               />
             </a>
@@ -63,7 +63,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-white hover:text-textPrimary"
                 icon={faYoutube}
               />
             </a>
@@ -74,7 +74,7 @@ const Footer = () => {
             >
               <FontAwesomeIcon
                 size="2x"
-                className="text-black"
+                className="text-white hover:text-textPrimary"
                 icon={faLinkedin}
               />
             </a>

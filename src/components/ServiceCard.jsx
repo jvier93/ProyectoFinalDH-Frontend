@@ -1,6 +1,3 @@
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import Button from "@/components/Button";
 
@@ -24,7 +21,7 @@ const ServiceCard = ({ service, isViewOnly }) => {
     <article className="flex gap-2 rounded-md border bg-white p-4">
       <img
         src={service?.urlImage}
-        className="h-full w-60 rounded-md object-cover"
+        className="hidden h-full w-60 rounded-md object-cover md:block"
         alt="Service image"
       />
       <div className="w-full space-y-4">
@@ -45,7 +42,7 @@ const ServiceCard = ({ service, isViewOnly }) => {
         </div>
         <div className="flex gap-2">
           {isViewOnly ? (
-            <Button variant="primary" to={`/dashboard/service/${service?.id}`}>
+            <Button variant="primary" to={`/services/${service?.id}`}>
               ver
             </Button>
           ) : (

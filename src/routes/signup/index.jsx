@@ -1,3 +1,5 @@
+import { useLayoutEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import FormInput from "@/components/FormInput";
@@ -7,6 +9,25 @@ import Swal from "sweetalert2";
 export default function Signup() {
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+
+  useLayoutEffect(() => {
+    if (user) {
+      Swal.fire({
+        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+        icon: "warning",
+        html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+              Buen intento!, pero seras redirigido al inicio
+          </p> 
+        `,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const validationSchema = yup.object({
     username: yup

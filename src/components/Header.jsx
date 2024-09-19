@@ -6,6 +6,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Search from "@/components/Search";
 import { useLocation } from "react-router-dom";
+import { useScreenWidth } from "@/hooks/useScreenWidth";
+
 const Header = () => {
   const { position } = useScroll();
   const isOnTop = position.y === 0;
@@ -13,6 +15,7 @@ const Header = () => {
   const isOnPrincipalPage = location.pathname === "/";
 
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isSmallScreen } = useScreenWidth();
 
   return (
     <header
@@ -21,7 +24,13 @@ const Header = () => {
       <Search searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
       <div className="mx-auto flex max-w-[1366px] flex-wrap items-center justify-between px-2 py-2">
         <div className="flex-1">
-          <Logo />
+          <Logo
+            logoUrl={
+              isOnTop && isOnPrincipalPage && !isSmallScreen
+                ? "/images/logo-green.png"
+                : "/images/logo-white.png"
+            }
+          />
         </div>
 
         <FontAwesomeIcon

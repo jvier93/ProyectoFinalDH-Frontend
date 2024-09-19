@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-export const Logo = () => {
+export const Logo = ({ logoUrl }) => {
   return (
     <div className="w-fit">
       <Link to="/">
-        <img src="/images/logo.svg" alt="logo app" className="w-40 md:w-full" />
+        <img src={logoUrl} alt="logo app" className="w-44 md:w-80" />
       </Link>
     </div>
   );
