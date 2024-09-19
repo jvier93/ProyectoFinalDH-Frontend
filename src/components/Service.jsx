@@ -15,7 +15,7 @@ const Service = ({ service }) => {
           <div className="flex flex-col gap-2">
             <p className="px-2 text-center text-sm">
               Precio <span className="font-bold">$UYU </span>
-              <span className="font-bold text-primary"> 200</span>
+              <span className="font-bold text-primary"> {service.price}</span>
             </p>
             <Link
               className="mx-auto w-fit rounded-md border border-gray-400 px-6 text-gray-500 transition-colors hover:border-primary hover:bg-white hover:text-primary"
