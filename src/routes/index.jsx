@@ -10,8 +10,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 async function loader() {
   try {
     const categoriesResponse = await fetch(`${API_URL}/categories`);
-
     const servicesResponse = await fetch(`${API_URL}/products/random`);
+    
 
     if (!categoriesResponse.ok || !servicesResponse.ok) {
       throw new Error("Error al traer los datos");
@@ -20,6 +20,7 @@ async function loader() {
     const categories = await categoriesResponse.json();
 
     const services = await servicesResponse.json();
+    
 
     return {
       categories,

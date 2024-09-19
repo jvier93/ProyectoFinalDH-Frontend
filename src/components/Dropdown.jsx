@@ -11,6 +11,7 @@ export const Dropdown = ({ isSmallScreen }) => {
   // we evaluate the 'show' expression, and if it's true, the corresponding link is rendered.
   const dropdownItems = [
     { show: true, type: "link", text: "Mi perfil", link: "/profile" },
+    { show: true, type: "link", text: "Mis Servicios", link: "/reservations" },
     {
       show: user.roles[0] === "ADMIN",
       type: "link",

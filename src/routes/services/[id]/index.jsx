@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const today = new Date();
 
 async function loader({ params }) {
   try {
@@ -27,6 +28,7 @@ async function loader({ params }) {
     const scheduledDates = details.reservations.map(
       (reservation) => reservation.date,
     );
+
 
     return {
       details,
@@ -54,6 +56,7 @@ async function loader({ params }) {
     });
     return { error: true };
   }
+
 }
 
 const Detail = () => {

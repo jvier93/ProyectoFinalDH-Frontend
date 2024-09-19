@@ -14,6 +14,7 @@ export default function Signup() {
 
   useLayoutEffect(() => {
     if (user) {
+
       Swal.fire({
         scrollbarPadding: false, // Disables extra space reserved for the scrollbar
         icon: "warning",
@@ -27,6 +28,7 @@ export default function Signup() {
       });
       navigate("/");
     }
+
   }, [user, navigate]);
 
   const validationSchema = yup.object({
