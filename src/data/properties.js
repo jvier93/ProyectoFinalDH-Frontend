@@ -1,11 +1,4 @@
-import {
-  faAward,
-  faLeaf,
-  faStar,
-  faShieldAlt,
-  faDollarSign,
-  faClock,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAward, faLeaf, faStar, faShieldAlt, faDollarSign, faClock } from '@fortawesome/free-solid-svg-icons';
 
 export const features = [
   {

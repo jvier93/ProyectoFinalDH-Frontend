@@ -24,9 +24,19 @@ async function loader({ params }) {
     }
     const details = await detailsResponse.json();
 
-    const scheduledDates = details.reservations.map(
-      (reservation) => reservation.date,
-    );
+    const scheduledDates = details.reservations.map((reservation) => {
+      const reservationDate = new Date(reservation.reservationDate);
+
+      //browser time zone
+      const browserOffsetInMinutes = new Date().getTimezoneOffset();
+
+      // adjust iso hour to current time zone
+      const adjustedDate = new Date(
+        reservationDate.getTime() - browserOffsetInMinutes * 60 * 1000,
+      );
+
+      return adjustedDate;
+    });
 
     return {
       details,
@@ -58,6 +68,7 @@ async function loader({ params }) {
 
 const Detail = () => {
   const { details, serviceProperties, scheduledDates } = useLoaderData();
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -132,6 +143,7 @@ const Detail = () => {
 
     return firstAvailableHour;
   };
+
   const handleDateChange = (date) => {
     let selectedDate = date;
     if (!isAvailableHour(date)) {

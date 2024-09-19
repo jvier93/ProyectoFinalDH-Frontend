@@ -1,4 +1,4 @@
-export const categories = [
+const categories = [
   {
     name: "Electricidad",
     image: "/images/categories/categoriaElectricidad.png",
@@ -12,7 +12,13 @@ export const categories = [
     image: "/images/categories/categoriaSanitaria.png",
   },
   {
-    name: "Sanitaria",
+    name: "Finalización",
+    image: "/images/categories/categoriaSanitaria.png",
+  },
+  {
+    name: "Limpieza",
     image: "/images/categories/categoriaSanitaria.png",
   },
 ];
+
+export default categories;

@@ -87,14 +87,14 @@ const NewReservation = () => {
           icon: "success",
           html: `
                 <p class="text-sm text-gray-500 text-center font-Inter">
-                   Servicio creado con éxito
+                   Reserva creada con éxito
                 </p>
 
               `,
           confirmButtonColor: "#33B8AD",
         });
 
-        navigate(`/reservations/all`);
+        navigate(`/reservations`);
       } catch (error) {
         console.error(`Error al guardar la reserva`);
         Swal.fire({

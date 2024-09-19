@@ -14,17 +14,6 @@ export default function Signup() {
 
   useLayoutEffect(() => {
     if (user) {
-      Swal.fire({
-        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
-        icon: "warning",
-        html: `
-          <p class="text-sm text-gray-500 text-center font-Inter">
-              Buen intento!, pero seras redirigido al inicio
-          </p> 
-        `,
-        showConfirmButton: false,
-        timer: 3000,
-      });
       navigate("/");
     }
   }, [user, navigate]);

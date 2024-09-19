@@ -10,7 +10,7 @@ import { Logo } from "@/components/Logo";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-secondary">
+    <footer className="w-full bg-secondary -mb-6">
       <div className="mx-auto flex max-w-[1366px] flex-col items-center justify-between gap-2 py-7 text-white lg:flex-row">
         <div className="flex flex-col items-center gap-2">
           <Logo logoUrl={"/images/logo-white.png"} />
@@ -23,13 +23,13 @@ const Footer = () => {
 
         <div className="my-8 flex flex-col items-center gap-4 lg:gap-8">
           <Link to="/">
-            <p>Términos y condiciones</p>
+            <p className="hover:underline hover:duration-300">Términos y condiciones</p>
           </Link>
           <Link to="/">
-            <p>Aviso de privacidad</p>
+            <p className="hover:underline hover:duration-300">Aviso de privacidad</p>
           </Link>
           <Link to="/">
-            <p>Política de privacidad</p>
+            <p className="hover:underline">Política de privacidad</p>
           </Link>
         </div>
 

@@ -36,7 +36,7 @@ const Header = () => {
         <FontAwesomeIcon
           onClick={() => setSearchOpen(true)}
           icon={faMagnifyingGlass}
-          className="cursor-pointer text-white"
+          className="cursor-pointer text-white transition delay-0 duration-500 ease-in-out hover:scale-125"
           size="xl"
         ></FontAwesomeIcon>
         <Nav />
