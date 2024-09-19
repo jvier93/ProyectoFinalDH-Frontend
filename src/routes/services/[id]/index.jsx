@@ -15,25 +15,48 @@ const API_URL = import.meta.env.VITE_API_URL;
 const today = new Date();
 
 async function loader({ params }) {
-  const detailsResponse = await fetch(
-    `${API_URL}/products/details/${params.id}`,
-  );
-  const serviceProperties = features;
+  try {
+    const detailsResponse = await fetch(
+      `${API_URL}/products/details/${params.id}`,
+    );
+    const serviceProperties = features;
+    if (!detailsResponse.ok) {
+      throw new Error(detailsResponse.status);
+    }
+    const details = await detailsResponse.json();
 
-  const details = await detailsResponse.json();
+    const scheduledDates = details.reservations.map(
+      (reservation) => reservation.date,
+    );
 
-  const scheduledDates = details.reservations.map(
-    (reservation) => reservation.date,
-  );
 
-  console.log(scheduledDates);
-  
+    return {
+      details,
+      serviceProperties,
+      scheduledDates,
+    };
+  } catch (error) {
+    Swal.fire({
+      scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+      icon: "error",
+      html: `
+            <p class="text-sm text-gray-500 text-center font-Inter">
+              Hubo un problema al intentar obtener el detalle del servicio.
+              Si el problema persiste puedes <a class="underline" href=mailto:serviciostecnicospruebasservic@gmail.com">contactar a soporte</a>.
+            </p>
+            
+          `,
+      footer: `
+                   <details class="text-sm cursor-pointer text-gray-500">
+                     <summary>Detalles del error</summary>
+                     <p>Código de error: ${error}</p>
+                   </details>
+                 `,
+      confirmButtonColor: "#33B8AD",
+    });
+    return { error: true };
+  }
 
-  return {
-    details,
-    serviceProperties,
-    scheduledDates,
-  };
 }
 
 const Detail = () => {
@@ -52,6 +75,10 @@ const Detail = () => {
   //Functions to calendar
 
   const getFullyBookedDays = (reservations) => {
+    if (!reservations || reservations.length === 0) {
+      return [];
+    }
+
     const groupedByDay = {};
     reservations.forEach((reservation) => {
       const bookingDate = new Date(reservation);
@@ -71,6 +98,10 @@ const Detail = () => {
       .map((dateKey) => new Date(dateKey));
   };
   const getReservedTimesForDay = (date, reservations) => {
+    if (!reservations || reservations.length === 0) {
+      return [];
+    }
+
     return reservations.filter((reservation) => {
       const bookedDate = new Date(reservation);
       return bookedDate.toDateString() === date.toDateString();

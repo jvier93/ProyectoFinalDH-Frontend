@@ -13,24 +13,21 @@ export default function Login() {
 
   useLayoutEffect(() => {
     if (user) {
-      const timer = setTimeout(() => {
-        Swal.fire({
-          scrollbarPadding: false,
-          icon: "warning",
-          html: `
-            <p class="text-sm text-gray-500 text-center font-Inter">
-                Buen intento!, pero seras redirigido al inicio
-            </p> 
-          `,
-          showConfirmButton: false,
-          timer: 3000,
-        }).then(() => {
-          navigate("/");
-        });
-      }, 1000);
 
-      return () => clearTimeout(timer);
-      }
+      Swal.fire({
+        scrollbarPadding: false, // Disables extra space reserved for the scrollbar
+        icon: "warning",
+        html: `
+          <p class="text-sm text-gray-500 text-center font-Inter">
+              Buen intento!, pero seras redirigido al inicio
+          </p> 
+        `,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      navigate("/");
+    }
+
   }, [user, navigate]);
 
   const validationSchema = yup.object({
