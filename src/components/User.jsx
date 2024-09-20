@@ -4,10 +4,7 @@ import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const User = ({ user }) => {
-  console.log(user.roles[0]);
-
   const roleName = user?.roles[0]?.match(/name=([A-Z]+)/)[1];
-  console.log(roleName);
 
   const handleDeleteUser = () => {
     Swal.fire({

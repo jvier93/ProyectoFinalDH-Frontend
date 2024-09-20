@@ -76,9 +76,9 @@ const Verify = () => {
   });
 
   return (
-    <main className="mt-20 md:mt-28">
-      <section className="px-2 space-y-10  md:px-12">
-        <h1 className="text-center text-xl text-primary  lg:text-4xl">
+    <main className="mt-20 text-textPrimary md:mt-28">
+      <section className="mx-auto max-w-[1366px] space-y-10 px-2">
+        <h1 className="justify-center text-center text-xl lg:text-4xl">
           Activar cuenta
         </h1>
         <p>
@@ -86,7 +86,7 @@ const Verify = () => {
           continuación para completar la activación.
         </p>
         <form
-          className="flex  w-4/5 lg:w-1/3 mx-auto flex-col gap-4"
+          className="mx-auto flex w-4/5 flex-col items-center gap-4 lg:w-1/3"
           onSubmit={formik.handleSubmit}
         >
           <FormInput
@@ -101,7 +101,7 @@ const Verify = () => {
           />
 
           <button
-            className="px-10 mt-8 disabled:bg-tertiary disabled:text-primary hover:bg-teal-600 w-fit mx-auto rounded-lg py-2 bg-primary text-white"
+            className="mx-auto mt-8 w-fit rounded-lg bg-primary px-10 py-2 text-white hover:bg-teal-600 disabled:bg-tertiary disabled:text-primary"
             type="submit"
             disabled={formik.isSubmitting}
           >

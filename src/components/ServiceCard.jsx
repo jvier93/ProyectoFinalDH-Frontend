@@ -3,8 +3,6 @@ import Button from "@/components/Button";
 
 //Card for service on dashboard panel
 const ServiceCard = ({ service, isViewOnly }) => {
-  console.log(service);
-  
   const handleDeleteUser = () => {
     Swal.fire({
       scrollbarPadding: false, // Disables extra space reserved for the scrollbar
@@ -12,7 +10,7 @@ const ServiceCard = ({ service, isViewOnly }) => {
       html: `
         <p class="text-sm text-gray-500 text-center font-Inter">
             Funcionalidad no disponible
-        </p> 
+        </p>
       `,
       showConfirmButton: false,
       timer: 1500,

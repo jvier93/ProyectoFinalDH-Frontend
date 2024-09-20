@@ -1,6 +1,7 @@
 import DataGridContainer from "@/components/DataGridContainer";
 import { useLoaderData } from "react-router-dom";
-import { Link } from "react-router-dom";
+import Button from "@/components/Button";
+
 import Swal from "sweetalert2";
 import ServiceCard from "../../../components/ServiceCard";
 
@@ -50,13 +51,10 @@ export default function Services() {
         Administrar servicios
       </h1>
       <section className="py-8">
-        <div className="w-full pb-4 text-right">
-          <Link
-            to={"/dashboard/services/new"}
-            className="rounded-full bg-secondaryLight px-10 text-primaryLight"
-          >
+        <div className="flex w-full justify-end pb-4 pr-2">
+          <Button to={"/dashboard/services/new"} variant={"primary"}>
             Nuevo servicio
-          </Link>
+          </Button>
         </div>
 
         <DataGridContainer>

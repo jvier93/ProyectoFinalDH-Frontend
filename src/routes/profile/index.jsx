@@ -6,11 +6,9 @@ const Profile = () => {
   const { user } = useAuth();
 
   return (
-    <main className="mt-20 md:mt-28">
-      <h1 className="text-center text-xl text-primary  lg:text-4xl">
-        Mi perfil
-      </h1>
-      <section className="md:px-20 px-2 py-10 flex flex-col gap-4">
+    <main className="mt-20 text-textPrimary md:mt-28">
+      <h1 className="text-center text-xl lg:text-4xl">Mi perfil</h1>
+      <section className="mx-auto flex max-w-[1366px] flex-col gap-4 px-2 py-10">
         <div className="flex flex-col gap-2">
           <h2 className="font-bold">Información personal</h2>
           <div>

@@ -7,6 +7,7 @@ import {
   faHouse,
   faCalendarDay,
   faClock,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 const FormInput = ({
@@ -18,7 +19,6 @@ const FormInput = ({
   placeholder,
   errorMessage,
   disabled,
-  options, //for select, an array of {value, label}
 }) => {
   const icons = {
     email: faEnvelope,
@@ -30,31 +30,9 @@ const FormInput = ({
     address: faHouse,
     date: faCalendarDay,
     time: faClock,
+    verificationCode: faCheck,
   };
 
-  if (type === "select") {
-    return (
-      <div className="flex flex-col gap-1">
-        <label className="text-primaryLight" htmlFor={id}>
-          {label}
-        </label>
-        <select
-          className="bg-tertiary py-2 text-sm text-primaryLight"
-          id={id}
-          {...fieldProps}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {showError && (
-          <span className="text-sm text-red-500">{errorMessage}</span>
-        )}
-      </div>
-    );
-  }
   return (
     <div className="flex flex-col gap-1 text-sm">
       <label className="text-gray-500" htmlFor={id}>

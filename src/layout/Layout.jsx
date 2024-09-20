@@ -24,11 +24,16 @@ const Layout = () => {
         <Outlet />
       </div>
 
-      <a href="https://wa.me/59894852661" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://wa.me/59894852661"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-[#25D366]"
+      >
         <FontAwesomeIcon
           icon={faWhatsapp}
-          style={{ color: "#25D366", fontSize: "48" }}
-          className="bg-white rounded-full w-16 h-16 fixed bottom-12 right-8 transition delay-0 duration-500 ease-in-out hover:scale-125"
+          style={{ color: "#fff", fontSize: "48" }}
+          className="fixed bottom-12 right-8 h-16 w-16 rounded-full bg-[#25D366] transition delay-0 duration-500 ease-in-out hover:scale-125"
         />
       </a>
 
